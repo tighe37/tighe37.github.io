@@ -1,0 +1,39 @@
+<!DocType html>
+<html lang="en">
+
+<head>
+    <title>The BEST Drop Box Code EVER (not really)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="DropBoxStyleSheet.css">
+
+</head>
+
+<body>
+    <h1>Interactive Map Category</h1>
+    <select id="Race">
+        <option value="1">Non-Hispanic White</option>
+        <option value="2">Non-Hispanic Black</option>
+        <option value="3">Hispanic</option>
+        <option value="4">Asian</option>
+        <option value="2">American Indian</option>
+        <option value="2">2 or more races.</option>
+    </select>
+    <!--The brake tage below makes it either spawn below the previous, 
+        or with out the tag it would spawn to the right. You guys choose.-->
+<br/>
+
+    <select id="Age">
+            <option value="1">18-24</option>
+            <option value="2">25-34</option>
+            <option value="3">35-44</option>
+            <option value="4">45-54</option>
+            <option value="2">55-64</option>
+            <option value="2">65+</option>
+        </select>
+
+
+</body>
+
+
+</html>
