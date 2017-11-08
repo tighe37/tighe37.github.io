@@ -28,3 +28,8 @@ body {
 	left:800px;
 	top:350px;
 }
+
+/*Text Box Boarder Style*/
+.border{
+	border: 1px solid black
+}
