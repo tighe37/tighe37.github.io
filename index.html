@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="stylesheet.css" />
   <script src="d3.v4.min.js"></script>
   <script src="d3-scale-chromatic.v1.min.js"></script>
+  <script src="plotly-latest.min.js"></script>
 </head>
 
 <body>
@@ -282,6 +283,74 @@
           }
         </script>
       </div>
+      <div id="pcpFrame"></div>
+      <script>
+          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
+          var gender = ["Male", "Female"]
+
+          // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
+          // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
+          // data/FARS_Ohio_2001-2016.csv
+          Plotly.d3.csv('/Users/nikhilacooduvalli/GeoVis/Geovisualization/FINAL DATA Proper Format.csv', function (err, rows) {
+
+                 //LocationDesc,YearStart,Data_Value,Category
+              function unpack(rows, key) {
+                  return rows.map(function (row) {
+                      return row[key];
+                  });
+              }
+              var data = [{
+                  type: 'parcoords',
+                  //pad: [80, 80, 80, 80],
+                  line: {
+                      color: unpack(rows, 'sex'),
+                      //colorscale: [[0, 'grey'], [1, 'blue'], [2, 'pink'], [8, 'grey'], [9, 'grey']]
+                      colorscale: [[0, 'blue'], [0.1, 'red'], [0.5, 'purple'], [1, 'green']]
+                      //colorscale: 'Jet'
+                  },
+
+                  dimensions: [{
+                      range: [.5, 2.5],
+                      label: 'Gender',
+                      tickvals: [1, 2],
+                      ticktext: ['Male', 'Female'],
+                      values: unpack(rows, 'Gender')
+                  }, {
+                      range: [0, 99],
+                      label: 'Age',
+                      values: unpack(rows, 'age')
+                  }, {
+                      //constraintrange: [0, 99],
+                      range: [0, 50],
+                      label: 'State',
+                      values: unpack(rows, 'LocationDesc')
+                  }, {
+                      range: [0, 350],
+                      label: 'BAC %',
+                      tickvals: [50, 100, 150, 200, 250, 300, 350],
+                      ticktext: ['.05', '.10', '.15', '.20', '.25', '.30', '.35'],
+                      values: unpack(rows, 'alcres')
+                  }, {
+                      range: [1, 7],
+                      label: 'Race',
+                      tickvals: [1, 2, 3, 4, 5, 6, 7],
+                      ticktext: ['Su', 'M', 'T', 'W', 'R', 'F', 'Sa'],
+                      values: unpack(rows, 'races')
+                  }]
+              }];
+
+              var layout = {
+                  // put variables here to change pcp size ('height: 500px;' etc)
+                  title: 'Parallel Coordinate Plot',
+                  margin: { r: 40, t: 100, b: 50, l: 40 }
+              };
+
+              Plotly.plot('pcpFrame', data, layout);
+          });
+      </script>
+      
       <div class="col-lg-6" id="map2">
         <script>
                     //Gotta find a way to make the map sizes change with the screen zoom
