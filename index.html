@@ -294,8 +294,7 @@
           // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
           // data/FARS_Ohio_2001-2016.csv
           Plotly.d3.csv('/Users/nikhilacooduvalli/Geo/tighe37.github.io/PCP.csv', function (err, rows) {
-
-                 //LocationDesc,YearStart,Data_Value,Category
+              //LocationDesc,YearStart,Data_Value,Category
               function unpack(rows, key) {
                   return rows.map(function (row) {
                       return row[key];
