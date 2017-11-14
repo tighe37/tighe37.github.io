@@ -294,9 +294,8 @@
           // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
           // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
           // data/FARS_Ohio_2001-2016.csv
-          Plotly.d3.csv('/Users/nikhilacooduvalli/GeoVis/Geovisualization/FINAL DATA Proper Format.csv', function (err, rows) {
-
-                 //LocationDesc,YearStart,Data_Value,Category
+          Plotly.d3.csv('/Users/nikhilacooduvalli/Geo/tighe37.github.io/MapData.csv', function (err, rows) {
+              //LocationDesc,YearStart,Data_Value,Category
               function unpack(rows, key) {
                   return rows.map(function (row) {
                       return row[key];
@@ -351,7 +350,7 @@
               Plotly.plot('pcpFrame', data, layout);
           });
       </script>
-      
+
       <div class="col-lg-6" id="map2">
         <script>
                     //Gotta find a way to make the map sizes change with the screen zoom
