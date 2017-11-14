@@ -194,7 +194,7 @@
             drop1map1Val = data
           }
           //making the class dropdown boxes
-          var classArray = ["Income", "Age", "Gender", "Race"]
+          var classArray = ["Age", "Education", "Gender","Income", "Race"]
           var dropdowns = d3.select("#map1")
             .append("div")
             .attr("class", "dropdown")
@@ -237,8 +237,9 @@
           var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
           var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
           var gender = ["Male", "Female"]
-          var subArray = [income, ages, gender, races,]
-
+          var education = ["College Graduate","High School Graduate","Less Than High School","Some College or Technical School"]
+          var subArray = [ages,education,gender,income,races]
+          
           var dropdowns = d3.select("#map1")
             .append("div")
             .attr("class", "dropdown")
@@ -263,11 +264,11 @@
 
           function makeDrop3map1(subclassVal) {
             d3.selectAll("#drop3limap1").remove()
-
-            for (var k = 0; k < subArray[subclassVal].length; k++) {
-              var dropSubs = d3.select("#drop3listmap1")
+            var dropSubs = d3.select("#drop3listmap1")
                 .append("li")
                 .attr("id", "drop3limap1")
+
+            for (var k = 0; k < subArray[subclassVal].length; k++) {
 
               var addSubs = d3.select("#drop3limap1")
                 .append("a")
@@ -516,7 +517,7 @@
                       drop1Map2Val = data
                     }
                     //making the class dropdown boxes
-                    var classArray = ["Income", "Age", "Gender", "Race"]
+                    var classArray = ["Age", "Education", "Gender","Income", "Race"]
                     var dropdowns = d3.select("#map2")
                       .append("div")
                       .attr("class", "dropdown")
@@ -558,8 +559,9 @@
                     var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
                     var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
                     var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
-                    var gender = ["Male", "Female"]
-                    var subArray = [income, ages, gender, races,]
+                    var gender = ["Female", "Male"]
+                    var education = ["College Graduate","High School Graduate","Less Than High School","Some College or Technical School"]
+                    var subArray = [ages,education,gender,income,races]
 
                     var dropdowns = d3.select("#map2")
                       .append("div")
@@ -586,10 +588,12 @@
                     function makeDrop3Map2(subclassVal) {
                       d3.selectAll("#drop3limap2").remove()
 
-                      for (var k = 0; k < subArray[subclassVal].length; k++) {
-                        var dropSubs = d3.select("#drop3listmap2")
+                      var dropSubs = d3.select("#drop3listmap2")
                           .append("li")
                           .attr("id", "drop3limap2")
+                          
+                      for (var k = 0; k < subArray[subclassVal].length; k++) {
+
 
                         var addSubs = d3.select("#drop3limap2")
                           .append("a")
@@ -608,7 +612,9 @@
                     //                  2011     2012     2013     2014   2015
                     var totalArray = [subArray,subArray,subArray,subArray,subArray]
                     //function to make a map depending on the values given by the drop boxes
-                    
+                    //year:2011 = i1=0
+                    //class = age = i2=0
+                    //subclass
                     function makeMap2(i1,i2, i3) {
 
                       var masterIndex = i1 * 4 + i2 * 5 + i3

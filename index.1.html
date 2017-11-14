@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Obesity in The United States</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <link rel="stylesheet" href="stylesheet.css" />
+  <script src="d3.v4.min.js"></script>
+  <script src="d3-scale-chromatic.v1.min.js"></script>
+  <script src="plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+  <div class="jumbotron text-center" style="height:200px;">
+    <h1>Obesity in the US</h1>
+    <p>An Interactive Web App</p>
+  </div>
+
+  <div class="container" width=100%>
+    <div class="row">
+      <div class="col-lg-6" id="map1">
+        <script>
+          var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
+          var classArray = ["Age", "Education", "Gender", "Income", "Race"]
+          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
+          var gender = ["Male", "Female"]
+          var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+          var subArray = [ages, education, gender, income, races]
+          var bigArray = [subArray, subArray, subArray, subArray, subArray]
+          var setDrop1map1
+          var width = 864;
+          var height = 450;
+
+          var drop1map1Val = 0
+          var drop2map1Val = 0
+          var drop3map1Val = 99
+
+          // D3 Projection
+          var projection = d3.geoAlbersUsa()
+            .translate([width / 2, height / 2])    // translate to center of screen
+            .scale([900]);          // scale things down so see entire US
+
+          // Define path generator
+          var path = d3.geoPath()               // path generator that will convert GeoJSON to SVG paths
+            .projection(projection);  // tell path generator to use albersUsa projection
+          var svg = d3.select("body")
+            .append("svg")
+            .attr("width", "50%")
+            .attr("height", height);
+
+
+
+          //this whole part should be a function that takes two .csv names or column names
+          //depending on which method we go with and develop two maps depending on those
+          //variables. I could make it work now, but all it would be doing is copy/pasting
+          //the next 60 lines which wouldnt be helpful to anyone.
+
+          // Append Div for tooltip to SVG
+          var div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+          // Load in my states data!
+
+
+          d3.csv("MapData.csv", function (data) {
+            //color.domain([0, 1, 2, 3]); // setting the range of the input data
+
+
+            // this will need to be adjusted to add all of the data from the csv ***
+            // Load GeoJSON data and merge with states data
+            d3.json("us-states.json", function (json) {
+              // Loop through each state data value in the .csv file
+              var maxRate = 0;
+              var minRate = 100;
+              for (var k = 0; k < json.features.length; k++) {
+                //gives each json feature a copy of bigArray which holds
+                //5 arrays, one for each year, each of those arrays holds 5arrays
+                //one for each class, and each of those arrays holds the values for its subclasses
+                json.features[k].properties.year = bigArray
+              }
+              for (var i = 0; i < data.length; i++) {
+
+                // Grab State Name/class/subclass/year
+                var dataState = data[i].LocationDesc;
+                var dataClass = data[i].Class;
+                var dataSub = data[i].Subclass;
+                var datayear = data[i].YearStart
+                var yearIndex = 0
+                var classIndex = 0
+                var subIndex = 0
+
+                // Grab data value
+                var dataValue = data[i].Value;
+                if (dataValue > maxRate && dataValue != "DNE") {
+                  maxRate = dataValue
+                }
+
+                if (dataValue < minRate && dataValue != "DNE") {
+                  minRate = dataValue
+                }
+                // Find the corresponding state inside the GeoJSON
+                for (var j = 0; j < json.features.length; j++) {
+
+                  var jsonState = json.features[j].properties.name;
+
+                  if (dataState == jsonState) {
+
+                    //these switches give the indices where to store the data values within the bigArrays 
+                    switch (datayear) {
+                      case 2011:
+                        yearIndex = 0
+                        break;
+                      case 2012:
+                        yearIndex = 1
+                        break;
+                      case 2013:
+                        yearIndex = 2
+                        break;
+                      case 2014:
+                        yearIndex = 3
+                        break;
+                      case 2015:
+                        yearIndex = 4
+                        break;
+                        defeault:
+                        break;
+                    }
+
+                    switch (dataClass) {
+                      case data[i].Age:
+                        classIndex = 0
+                        switch (dataSub) {
+                          case "18-24":
+                            subIndex = 0
+                            break;
+                          case "25-34":
+                            subIndex = 1
+                            break;
+                          case "35-44":
+                            subIndex = 2
+                            break;
+                          case "45-54":
+                            subIndex = 3
+                            break;
+                          case "55-64":
+                            subIndex = 4
+                            break;
+                          case "65-100":
+                            subIndex = 5
+                            break;
+                          default:
+                            break;
+
+                        }
+                        break;
+                      case data[i].Education:
+                        classIndex = 1
+                        switch (data[i].Subclass) {
+                          case "College graduate":
+                            subIndex = 0
+                            break;
+                          case "High school graduate":
+                            subIndex = 1
+                            break;
+                          case "Less than high school":
+                            subIndex = 2
+                            break;
+                          case "Some college or technical school":
+                            subIndex = 3
+                            break;
+                          default:
+                            break;
+                        }
+                        break;
+                      case data[i].Gender:
+                        classIndex = 2
+                        switch (data[i].Subclass) {
+                          case "Male":
+                            subIndex = 0
+                            break;
+                          case "Female":
+                            subIndex = 1
+                            break;
+                          default:
+                            break;
+                        }
+                        break;
+                      case data[i].Income:
+                        classIndex = 3
+                        switch (data[i].Subclass) {
+                          case "$15,000 or Less":
+                            subIndex = 0
+                            break;
+                          case "$15,000 - $24,999":
+                            subIndex = 1
+                            break;
+                          case "$25,000 - $34,999":
+                            subIndex = 2
+                            break;
+                          case "$35,000 - $49,999":
+                            subIndex = 3
+                            break;
+                          case "$50,000 - $74,999":
+                            subIndex = 4
+                            break;
+                          case "$75,000 or greater":
+                            subIndex = 5
+                            break;
+                          case "Data not reported":
+                            subIndex = 6
+                          default:
+                            break;
+                        }
+                        break;
+                      case data[i].Race:
+                        classIndex = 4
+                        switch (data[i].Subclass) {
+                          case "American Indian/Alaska Native":
+                            subIndex = 0
+                            break;
+                          case "Non-Hispanic Black":
+                            subIndex = 1
+                            break;
+                          case "Non-Hispanic White":
+                            subIndex = 2
+                            break;
+                          case "Asian":
+                            subIndex = 3
+                            break;
+                          case "Hawaiian/Pacific Islander":
+                            subIndex = 4
+                            break;
+                          case "Hispanic":
+                            subIndex = 5
+                            break;
+                          case "2 or More Races":
+                            subIndex = 6
+                          case "Other":
+                            subIndex = 7
+                            break;
+                          default:
+                            break;
+                        }
+                        break;
+                      default:
+                        break;
+                    }
+
+                    json.features[j].properties.year[yearIndex][classIndex][subIndex]=data[i].Value
+                  }
+                  
+
+                    // Stop looking through the JSON
+                  break;
+                }
+              }
+              console.log("out of loop")
+
+
+            
+              drawTotalsMap1(json)
+              // Bind the data to the SVG and create one path per GeoJSON feature
+              function drawTotalsMap1(json) {
+                svg.selectAll("path")
+                  .data(json.features)
+                  .enter()
+                  .append("path")
+                  .attr("d", path)
+                  .style("stroke", "#fff")
+                  .style("stroke-width", "1")
+                  .style("fill", function (d) {
+
+                    // Get data value
+                    var value = d.properties.year;
+
+                    if (value === "DNE") {
+                      //If value exists…
+                      //If value is und efined…
+                      return "black";
+
+
+                    } else {
+                      //color = d3.interpolateBlues(value / (maxRate / 100))
+                      var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                      return color(value);
+                    }
+                  })
+                svg.selectAll("path")
+                  // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+                  // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                  .on("mouseover", function (d) {
+                    div.transition()
+                      .duration(200)
+                      .style("opacity", .9);
+                    div.text(d.properties.year + "% of the population in " + d.properties.name + " is obese.")
+                      .style("left", (d3.event.pageX) + "px")
+                      .style("top", (d3.event.pageY - 28) + "px");
+                  })
+
+                  // fade out tooltip on mouse out               
+                  .on("mouseout", function (d) {
+                    div.transition()
+                      .duration(500)
+                      .style("opacity", 0);
+                  });
+              }
+
+
+            });
+          });
+
+
+
+          //making the years dropdown box
+          var dropdowns = d3.select("#map1")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop1map1");
+
+          var button = d3.select("#drop1map1")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Year")
+            .attr("id", "drop1buttonmap1");
+
+          var span = d3.select("#drop1buttonmap1")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop1map1")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop1listmap1");
+
+          for (var k = 0; k < yearsArray.length; k++) {
+            var dropSubs = d3.select("#drop1listmap1")
+              .append("li")
+              .attr("id", "drop1limap1")
+
+            var addSubs = d3.select("#drop1limap1")
+              .append("a")
+              .text(yearsArray[k])
+              .attr("onclick", "setDrop1map1(" + k + ")")
+          }
+
+          function setDrop1map1(data) {
+            drop1map1Val = data
+          }
+          //making the class dropdown boxes
+
+          var dropdowns = d3.select("#map1")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop2map1");
+
+          var button = d3.select("#drop2map1")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Class")
+            .attr("id", "drop2buttonmap1");
+
+          var span = d3.select("#drop2buttonmap1")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop2map1")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop2listmap1");
+
+          for (var j = 0; j < classArray.length; j++) {
+            var dropSubs = d3.select("#drop2listmap1")
+              .append("li")
+              .attr("id", "drop2limap1")
+
+            var addSubs = d3.select("#drop2limap1")
+              .append("a")
+              .text(classArray[j])
+              .attr("onclick", "makeDrop3map1(" + j + ");setDrop2map1(" + j + ")")
+
+
+          }
+
+          function setDrop2map1(data) {
+            drop2map1Val = data
+          }
+
+
+          var dropdowns = d3.select("#map1")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop3map1");
+
+          var button = d3.select("#drop3map1")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Subclass")
+            .attr("id", "drop3buttonmap1");
+
+          var span = d3.select("#drop3buttonmap1")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop3map1")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop3listmap1");
+
+          function makeDrop3map1(subclassVal) {
+            d3.selectAll("#drop3limap1").remove()
+            var dropSubs = d3.select("#drop3listmap1")
+              .append("li")
+              .attr("id", "drop3limap1")
+
+            for (var k = 0; k < subArray[subclassVal].length; k++) {
+
+              var addSubs = d3.select("#drop3limap1")
+                .append("a")
+                .text(subArray[subclassVal][k])
+                .attr("onclick", "setDrop3map1(" + k + ")")
+
+            }
+            //making the third subclass array which is variable based on a variable
+          }
+
+          function setDrop3map1(data) {
+            drop3map1Val = data
+          }
+        </script>
+      </div>
+      <div id="pcpFrame"></div>
+      <script>
+          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
+          var gender = ["Male", "Female"]
+
+          // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
+          // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
+          // data/FARS_Ohio_2001-2016.csv
+          Plotly.d3.csv('/Users/nikhilacooduvalli/GeoVis/Geovisualization/FINAL DATA Proper Format.csv', function (err, rows) {
+
+            //LocationDesc,YearStart,Data_Value,Category
+            function unpack(rows, key) {
+              return rows.map(function (row) {
+                return row[key];
+              });
+            }
+            var data = [{
+              type: 'parcoords',
+              //pad: [80, 80, 80, 80],
+              line: {
+                color: unpack(rows, 'sex'),
+                //colorscale: [[0, 'grey'], [1, 'blue'], [2, 'pink'], [8, 'grey'], [9, 'grey']]
+                colorscale: [[0, 'blue'], [0.1, 'red'], [0.5, 'purple'], [1, 'green']]
+                //colorscale: 'Jet'
+              },
+
+              dimensions: [{
+                range: [.5, 2.5],
+                label: 'Gender',
+                tickvals: [1, 2],
+                ticktext: ['Male', 'Female'],
+                values: unpack(rows, 'Gender')
+              }, {
+                range: [0, 99],
+                label: 'Age',
+                values: unpack(rows, 'age')
+              }, {
+                //constraintrange: [0, 99],
+                range: [0, 50],
+                label: 'State',
+                values: unpack(rows, 'LocationDesc')
+              }, {
+                range: [0, 350],
+                label: 'BAC %',
+                tickvals: [50, 100, 150, 200, 250, 300, 350],
+                ticktext: ['.05', '.10', '.15', '.20', '.25', '.30', '.35'],
+                values: unpack(rows, 'alcres')
+              }, {
+                range: [1, 7],
+                label: 'Race',
+                tickvals: [1, 2, 3, 4, 5, 6, 7],
+                ticktext: ['Su', 'M', 'T', 'W', 'R', 'F', 'Sa'],
+                values: unpack(rows, 'races')
+              }]
+            }];
+
+            var layout = {
+              // put variables here to change pcp size ('height: 500px;' etc)
+              title: 'Parallel Coordinate Plot',
+              margin: { r: 40, t: 100, b: 50, l: 40 }
+            };
+
+            Plotly.plot('pcpFrame', data, layout);
+          });
+      </script>
+
+      <div class="col-lg-6" id="map2">
+        <script>
+          //Gotta find a way to make the map sizes change with the screen zoom
+          //so they stop going into tabular mode
+          var width = width;
+          var height = 450;
+
+          //drop down box values
+          var drop1Map2Val = 0
+          var drop2Map2Val = 0
+          var drop3Map2Val = 99
+          // D3 Projection
+          var projection = d3.geoAlbersUsa()
+            .translate([width / 2, height / 2])    // translate to center of screen
+            .scale([900]);          // scale things down so see entire US
+
+          // Define path generator
+          var path = d3.geoPath()               // path generator that will convert GeoJSON to SVG paths
+            .projection(projection);  // tell path generator to use albersUsa projection
+          var svg2 = d3.select("body")
+            .append("svg")
+            .attr("width", "50%")
+            .attr("height", height);
+
+
+
+
+          // Append Div for tooltip to SVG
+          var div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+          // Load in my states data!
+
+          d3.csv("MapData.csv", function (data) {
+            //color.domain([0, 1, 2, 3]); // setting the range of the input data
+
+
+            // this will need to be adjusted to add all of the data from the csv ***
+            // Load GeoJSON data and merge with states data
+            d3.json("us-states.json", function (json) {
+
+              // Loop through each state data value in the .csv file
+              var maxRate = 0;
+              var minRate = 100;
+              for (var i = 0; i < data.length; i++) {
+
+                // Grab State Name
+                var dataState = data[i].LocationDesc;
+
+                // Grab data value
+                var dataValue = data[i].twoeleven;
+                if (dataValue > maxRate && dataValue != "DNE") {
+                  maxRate = dataValue
+                }
+
+                if (dataValue < minRate && dataValue != "DNE") {
+                  minRate = dataValue
+                }
+                // Find the corresponding state inside the GeoJSON
+                for (var j = 0; j < json.features.length; j++) {
+                  var jsonState = json.features[j].properties.name;
+
+                  if (dataState == jsonState) {
+
+                    // Copy the data value into the JSON
+                    json.features[j].properties.year = dataValue;
+
+
+                    // Stop looking through the JSON
+                    break;
+                  }
+                }
+              }
+              // Bind the data to the SVG and create one path per GeoJSON feature
+              svg2.selectAll("path")
+                .data(json.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .style("stroke", "#fff")
+                .style("stroke-width", "1")
+                .style("fill", function (d) {
+
+                  // Get data value
+                  var value = d.properties.year;
+
+                  if (value === "DNE") {
+                    //If value exists…
+                    //If value is undefined…
+                    return "black";
+
+
+                  } else {
+                    //color = d3.interpolateBlues(value / (maxRate / 100))
+                    var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                    return color(value);
+                  }
+                })
+              svg2.selectAll("path")
+                // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+                // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                .on("mouseover", function (d) {
+                  div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                  div.text(d.properties.year + "% of the population in " + d.properties.name + " is obese.")
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                })
+
+                // fade out tooltip on mouse out               
+                .on("mouseout", function (d) {
+                  div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                });
+
+
+            });
+          });
+
+
+
+          var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
+
+          //making the years dropdown box
+          var dropdowns = d3.select("#map2")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop1map2");
+
+          var button = d3.select("#drop1map2")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Year")
+            .attr("id", "drop1buttonmap2");
+
+          var span = d3.select("#drop1buttonmap2")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop1map2")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop1listmap2");
+
+          for (var k = 0; k < yearsArray.length; k++) {
+            var dropSubs = d3.select("#drop1listmap2")
+              .append("li")
+              .attr("id", "drop1limap2")
+
+            var addSubs = d3.select("#drop1limap2")
+              .append("a")
+              .text(yearsArray[k])
+              .attr("onclick", "setDrop1Map2(" + k + ")")
+          }
+
+          function setDrop1Map2(data) {
+            drop1Map2Val = data
+          }
+          //making the class dropdown boxes
+          var classArray = ["Age", "Education", "Gender", "Income", "Race"]
+          var dropdowns = d3.select("#map2")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop2map2");
+
+          var button = d3.select("#drop2map2")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Class")
+            .attr("id", "drop2buttonmap2");
+
+          var span = d3.select("#drop2buttonmap2")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop2map2")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop2listmap2");
+
+          for (var j = 0; j < classArray.length; j++) {
+            var dropSubs = d3.select("#drop2listmap2")
+              .append("li")
+              .attr("id", "drop2limap2")
+
+            var addSubs = d3.select("#drop2limap2")
+              .append("a")
+              .text(classArray[j])
+              .attr("onclick", "makeDrop3Map2(" + j + ");setDrop2Map2(" + j + ")")
+
+
+          }
+
+          function setDrop2Map2(data) {
+            drop2Map2Val = data
+          }
+          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
+          var gender = ["Female", "Male"]
+          var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+          var subArray = [ages, education, gender, income, races]
+
+          var dropdowns = d3.select("#map2")
+            .append("div")
+            .attr("class", "dropdown")
+            .attr("id", "drop3map2");
+
+          var button = d3.select("#drop3map2")
+            .append("button")
+            .attr("class", "btn btn-primary dropdown-toggle")
+            .attr("type", "button")
+            .attr("data-toggle", "dropdown")
+            .text("Select Subclass")
+            .attr("id", "drop3buttonmap2");
+
+          var span = d3.select("#drop3buttonmap2")
+            .append("span")
+            .attr("class", "caret")
+
+          var menu = d3.select("#drop3map2")
+            .append("ul")
+            .attr("class", "dropdown-menu")
+            .attr("id", "drop3listmap2");
+
+          function makeDrop3Map2(subclassVal) {
+            d3.selectAll("#drop3limap2").remove()
+
+            var dropSubs = d3.select("#drop3listmap2")
+              .append("li")
+              .attr("id", "drop3limap2")
+
+            for (var k = 0; k < subArray[subclassVal].length; k++) {
+
+
+              var addSubs = d3.select("#drop3limap2")
+                .append("a")
+                .text(subArray[subclassVal][k])
+                .attr("onclick", "setDrop3Map2(" + k + ");makeMap2(" + drop1Map2Val + "," + drop2Map2Val + "," + drop3Map2Val + ")");
+
+            }
+            //making the third subclass array which is variable based on a variable
+          }
+
+          function setDrop3Map2(data) {
+            drop3Map2Val = data
+          }
+
+
+          //                  2011     2012     2013     2014   2015
+          var totalArray = [subArray, subArray, subArray, subArray, subArray]
+          //function to make a map depending on the values given by the drop boxes
+          //year:2011 = i1=0
+          //class = age = i2=0
+          //subclass
+          function makeMap2(i1, i2, i3) {
+
+            var masterIndex = i1 * 4 + i2 * 5 + i3
+            //2011-income-0to15k = index 0 
+            //2011-income-15kto25k = index 1
+            //2012-age-25to34 = index 10
+            d3.csv("FINALDATAProperFormat.csv", function (data) {
+
+
+              // this will need to be adjusted to add all of the data from the csv ***
+              // Load GeoJSON data and merge with states data
+              d3.json("us-states.json", function (json) {
+
+                // Loop through each state data value in the .csv file
+                var maxRate = 0;
+                var minRate = 100;
+                for (var i = 0; i < data.length; i++) {
+
+                  // Grab State Name
+                  var dataState = data[i].LocationDesc;
+
+                  // Grab data value
+                  var dataValue = data[i].twoeleven;
+                  if (dataValue > maxRate && dataValue != "DNE") {
+                    maxRate = dataValue
+                  }
+
+                  if (dataValue < minRate && dataValue != "DNE") {
+                    minRate = dataValue
+                  }
+                  // Find the corresponding state inside the GeoJSON
+                  for (var j = 0; j < json.features.length; j++) {
+                    var jsonState = json.features[j].properties.name;
+
+                    if (dataState == jsonState) {
+
+                      // Copy the data value into the JSON
+                      json.features[j].properties.year = dataValue;
+
+
+                      // Stop looking through the JSON
+                      break;
+                    }
+                  }
+                }
+                // Bind the data to the SVG and create one path per GeoJSON feature
+                svg2.selectAll("path")
+                  .data(json.features)
+                  .enter()
+                  .append("path")
+                  .attr("d", path)
+                  .style("stroke", "#fff")
+                  .style("stroke-width", "1")
+                  .style("fill", function (d) {
+
+                    // Get data value
+                    var value = d.properties.year;
+
+                    if (value === "DNE") {
+                      //If value exists…
+                      //If value is undefined…
+                      return "black";
+
+
+                    } else {
+                      //color = d3.interpolateBlues(value / (maxRate / 100))
+                      var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                      return color(value);
+                    }
+                  })
+                svg2.selectAll("path")
+                  // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+                  // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                  .on("mouseover", function (d) {
+                    div.transition()
+                      .duration(200)
+                      .style("opacity", .9);
+                    div.text(d.properties.year + "% of the population in " + d.properties.name + " is obese.")
+                      .style("left", (d3.event.pageX) + "px")
+                      .style("top", (d3.event.pageY - 28) + "px");
+                  })
+
+                  // fade out tooltip on mouse out               
+                  .on("mouseout", function (d) {
+                    div.transition()
+                      .duration(500)
+                      .style("opacity", 0);
+                  });
+
+
+              });
+            });
+          }
+
+
+
+        </script>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
