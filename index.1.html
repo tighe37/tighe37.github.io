@@ -28,9 +28,9 @@
           var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
           var classArray = ["Age", "Education", "Gender", "Income", "Race"]
           var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
-          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
           var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
-          var gender = ["Male", "Female"]
+          var gender = ["Female", "Male"]
           var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
           var subArray = [ages, education, gender, income, races]
           var bigArray = [subArray, subArray, subArray, subArray, subArray]
@@ -90,16 +90,10 @@
               for (var i = 0; i < data.length; i++) {
 
                 // Grab State Name/class/subclass/year
-                var dataState = data[i].LocationDesc;
-                var dataClass = data[i].Class;
-                var dataSub = data[i].Subclass;
-                var datayear = data[i].YearStart
-                var yearIndex = 0
-                var classIndex = 0
-                var subIndex = 0
+
 
                 // Grab data value
-                var dataValue = data[i].Value;
+
                 if (dataValue > maxRate && dataValue != "DNE") {
                   maxRate = dataValue
                 }
@@ -109,52 +103,58 @@
                 }
                 // Find the corresponding state inside the GeoJSON
                 for (var j = 0; j < json.features.length; j++) {
-
+                  var dataValue = data[i].Value;
+                  var dataState = data[i].LocationDesc;
+                  var dataClass = data[i].Class;
+                  var dataSub = data[i].Subclass;
+                  var datayear = data[i].YearStart
+                  var yearIndex = -1
+                  var classIndex = -1
+                  var subIndex = -1
                   var jsonState = json.features[j].properties.name;
 
                   if (dataState == jsonState) {
-
                     //these switches give the indices where to store the data values within the bigArrays 
                     switch (datayear) {
-                      case 2011:
+                      case "2011":
                         yearIndex = 0
                         break;
-                      case 2012:
+                      case "2012":
                         yearIndex = 1
                         break;
-                      case 2013:
+                      case "2013":
                         yearIndex = 2
                         break;
-                      case 2014:
+                      case "2014":
                         yearIndex = 3
                         break;
-                      case 2015:
+                      case "2015":
                         yearIndex = 4
                         break;
-                        defeault:
+                      default:
                         break;
                     }
 
                     switch (dataClass) {
-                      case data[i].Age:
+                      case "Age":
                         classIndex = 0
                         switch (dataSub) {
-                          case "18-24":
+                          case "18 - 24":
                             subIndex = 0
                             break;
-                          case "25-34":
+                          case "25 - 34":
                             subIndex = 1
                             break;
-                          case "35-44":
+                          case "35 - 44":
                             subIndex = 2
                             break;
-                          case "45-54":
+                          case "45 - 54":
                             subIndex = 3
                             break;
-                          case "55-64":
+                          case "55 - 64":
                             subIndex = 4
                             break;
-                          case "65-100":
+                          case "65 or older":
                             subIndex = 5
                             break;
                           default:
@@ -162,7 +162,7 @@
 
                         }
                         break;
-                      case data[i].Education:
+                      case "Education":
                         classIndex = 1
                         switch (data[i].Subclass) {
                           case "College graduate":
@@ -181,20 +181,20 @@
                             break;
                         }
                         break;
-                      case data[i].Gender:
+                      case "Gender":
                         classIndex = 2
                         switch (data[i].Subclass) {
-                          case "Male":
+                          case "Female":
                             subIndex = 0
                             break;
-                          case "Female":
+                          case "Male":
                             subIndex = 1
                             break;
                           default:
                             break;
                         }
                         break;
-                      case data[i].Income:
+                      case "Income":
                         classIndex = 3
                         switch (data[i].Subclass) {
                           case "$15,000 or Less":
@@ -221,7 +221,7 @@
                             break;
                         }
                         break;
-                      case data[i].Race:
+                      case "Race/Ethnicity":
                         classIndex = 4
                         switch (data[i].Subclass) {
                           case "American Indian/Alaska Native":
@@ -242,7 +242,7 @@
                           case "Hispanic":
                             subIndex = 5
                             break;
-                          case "2 or More Races":
+                          case "2 or more races":
                             subIndex = 6
                           case "Other":
                             subIndex = 7
@@ -254,19 +254,25 @@
                       default:
                         break;
                     }
-
-                    json.features[j].properties.year[yearIndex][classIndex][subIndex]=data[i].Value
+                    if (dataState == "Alabama") {
+                      console.log("jsonState: "+jsonState+" dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
+                    }
+                    if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                      json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
+                    } else {
+                      json.features[j].properties.year[yearIndex][classIndex][subIndex] = dataValue
+                    }
                   }
-                  
 
-                    // Stop looking through the JSON
-                  break;
+
+                  // Stop looking through the JSON
+                  break;  
                 }
               }
               console.log("out of loop")
 
 
-            
+
               drawTotalsMap1(json)
               // Bind the data to the SVG and create one path per GeoJSON feature
               function drawTotalsMap1(json) {
@@ -445,70 +451,70 @@
       </div>
       <div id="pcpFrame"></div>
       <script>
-          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
-          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
-          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
-          var gender = ["Male", "Female"]
+        var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
+        var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
+        var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
+        var gender = ["Male", "Female"]
 
-          // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
-          // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
-          // data/FARS_Ohio_2001-2016.csv
-          Plotly.d3.csv('/Users/nikhilacooduvalli/GeoVis/Geovisualization/FINAL DATA Proper Format.csv', function (err, rows) {
+        // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
+        // data/FARS_Data_FranklinCounty_2016_AllVariables.csv
+        // data/FARS_Ohio_2001-2016.csv
+        Plotly.d3.csv('/Users/nikhilacooduvalli/GeoVis/Geovisualization/FINAL DATA Proper Format.csv', function (err, rows) {
 
-            //LocationDesc,YearStart,Data_Value,Category
-            function unpack(rows, key) {
-              return rows.map(function (row) {
-                return row[key];
-              });
-            }
-            var data = [{
-              type: 'parcoords',
-              //pad: [80, 80, 80, 80],
-              line: {
-                color: unpack(rows, 'sex'),
-                //colorscale: [[0, 'grey'], [1, 'blue'], [2, 'pink'], [8, 'grey'], [9, 'grey']]
-                colorscale: [[0, 'blue'], [0.1, 'red'], [0.5, 'purple'], [1, 'green']]
-                //colorscale: 'Jet'
-              },
+          //LocationDesc,YearStart,Data_Value,Category
+          function unpack(rows, key) {
+            return rows.map(function (row) {
+              return row[key];
+            });
+          }
+          var data = [{
+            type: 'parcoords',
+            //pad: [80, 80, 80, 80],
+            line: {
+              color: unpack(rows, 'sex'),
+              //colorscale: [[0, 'grey'], [1, 'blue'], [2, 'pink'], [8, 'grey'], [9, 'grey']]
+              colorscale: [[0, 'blue'], [0.1, 'red'], [0.5, 'purple'], [1, 'green']]
+              //colorscale: 'Jet'
+            },
 
-              dimensions: [{
-                range: [.5, 2.5],
-                label: 'Gender',
-                tickvals: [1, 2],
-                ticktext: ['Male', 'Female'],
-                values: unpack(rows, 'Gender')
-              }, {
-                range: [0, 99],
-                label: 'Age',
-                values: unpack(rows, 'age')
-              }, {
-                //constraintrange: [0, 99],
-                range: [0, 50],
-                label: 'State',
-                values: unpack(rows, 'LocationDesc')
-              }, {
-                range: [0, 350],
-                label: 'BAC %',
-                tickvals: [50, 100, 150, 200, 250, 300, 350],
-                ticktext: ['.05', '.10', '.15', '.20', '.25', '.30', '.35'],
-                values: unpack(rows, 'alcres')
-              }, {
-                range: [1, 7],
-                label: 'Race',
-                tickvals: [1, 2, 3, 4, 5, 6, 7],
-                ticktext: ['Su', 'M', 'T', 'W', 'R', 'F', 'Sa'],
-                values: unpack(rows, 'races')
-              }]
-            }];
+            dimensions: [{
+              range: [.5, 2.5],
+              label: 'Gender',
+              tickvals: [1, 2],
+              ticktext: ['Male', 'Female'],
+              values: unpack(rows, 'Gender')
+            }, {
+              range: [0, 99],
+              label: 'Age',
+              values: unpack(rows, 'age')
+            }, {
+              //constraintrange: [0, 99],
+              range: [0, 50],
+              label: 'State',
+              values: unpack(rows, 'LocationDesc')
+            }, {
+              range: [0, 350],
+              label: 'BAC %',
+              tickvals: [50, 100, 150, 200, 250, 300, 350],
+              ticktext: ['.05', '.10', '.15', '.20', '.25', '.30', '.35'],
+              values: unpack(rows, 'alcres')
+            }, {
+              range: [1, 7],
+              label: 'Race',
+              tickvals: [1, 2, 3, 4, 5, 6, 7],
+              ticktext: ['Su', 'M', 'T', 'W', 'R', 'F', 'Sa'],
+              values: unpack(rows, 'races')
+            }]
+          }];
 
-            var layout = {
-              // put variables here to change pcp size ('height: 500px;' etc)
-              title: 'Parallel Coordinate Plot',
-              margin: { r: 40, t: 100, b: 50, l: 40 }
-            };
+          var layout = {
+            // put variables here to change pcp size ('height: 500px;' etc)
+            title: 'Parallel Coordinate Plot',
+            margin: { r: 40, t: 100, b: 50, l: 40 }
+          };
 
-            Plotly.plot('pcpFrame', data, layout);
-          });
+          Plotly.plot('pcpFrame', data, layout);
+        });
       </script>
 
       <div class="col-lg-6" id="map2">
