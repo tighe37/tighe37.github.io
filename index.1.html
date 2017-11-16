@@ -25,15 +25,11 @@
     <div class="row">
       <div class="col-lg-6" id="map1">
         <script>
-          var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
-          var classArray = ["Age", "Education", "Gender", "Income", "Race"]
-          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
-          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
-          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
-          var gender = ["Female", "Male"]
-          var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
-          var subArray = [ages, education, gender, income, races]
-          var bigArray = [subArray, subArray, subArray, subArray, subArray]
+
+          //TODO: We have an issue with our arrays where when saving numbers to the json which contains arrays
+          //saves those numbers to every array. ie saving values to arizona rewrites the values in alabama and every other state
+          //because they reference the same array. Do we need to make new arrays for each? 
+
           var setDrop1map1
           var width = 864;
           var height = 450;
@@ -69,11 +65,16 @@
             .style("opacity", 0);
 
           // Load in my states data!
-
-
+          var statesArray = Array(51)
+          var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
+          var classArray = ["Age", "Education", "Gender", "Income", "Race"]
+          var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
+          var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
+          var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
+          var gender = ["Female", "Male"]
+          var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
           d3.csv("MapData.csv", function (data) {
             //color.domain([0, 1, 2, 3]); // setting the range of the input data
-
 
             // this will need to be adjusted to add all of the data from the csv ***
             // Load GeoJSON data and merge with states data
@@ -81,16 +82,49 @@
               // Loop through each state data value in the .csv file
               var maxRate = 0;
               var minRate = 100;
+              for (var p = 0; p < json.features.length; p++) { //state loop
+                statesArray[p] = Array(5)
+                for (var t = 0; t < 5; t++) { //loop for each year
+                  var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
+                  var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
+                  var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
+                  var gender = ["Female", "Male"]
+                  var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+                  statesArray[p][t] = [ages,education,gender,income,races]
+                  console.log(t)
+                }
+                json.features[p].properties.year = statesArray[p]
+              }
+
               for (var k = 0; k < json.features.length; k++) {
+                /*
+                var subAges = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
+                var subEd = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+                var subGen = ["Female", "Male"]
+                var subIn = income.slice()
+                var subRace = races.slice()
+                var subArray = [subAges, subEd, subGen, subIn, subRace]
+                var subArray1 = subArray.slice()
+                var subArray2 = subArray.slice()
+                var subArray3 = subArray.slice()
+                var subArray4 = subArray.slice()
+                var bigArray = [subArray, subArray1, subArray2, subArray3, subArray4]
+                */
                 //gives each json feature a copy of bigArray which holds
                 //5 arrays, one for each year, each of those arrays holds 5arrays
                 //one for each class, and each of those arrays holds the values for its subclasses
-                json.features[k].properties.year = bigArray
               }
               for (var i = 0; i < data.length; i++) {
 
                 // Grab State Name/class/subclass/year
-
+                var dataValue = data[i].Value;
+                var dataState = data[i].LocationDesc;
+                var dataClass = data[i].Class;
+                var dataSub = data[i].Subclass;
+                var datayear = data[i].YearStart
+                var yearIndex = -1
+                var classIndex = -1
+                var subIndex = -1
 
                 // Grab data value
 
@@ -103,14 +137,7 @@
                 }
                 // Find the corresponding state inside the GeoJSON
                 for (var j = 0; j < json.features.length; j++) {
-                  var dataValue = data[i].Value;
-                  var dataState = data[i].LocationDesc;
-                  var dataClass = data[i].Class;
-                  var dataSub = data[i].Subclass;
-                  var datayear = data[i].YearStart
-                  var yearIndex = -1
-                  var classIndex = -1
-                  var subIndex = -1
+
                   var jsonState = json.features[j].properties.name;
 
                   if (dataState == jsonState) {
@@ -254,10 +281,9 @@
                       default:
                         break;
                     }
-                    if (dataState == "Alabama") {
-                      console.log("jsonState: "+jsonState+" dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
-                    }
                     if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                      console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
+
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                     } else {
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = dataValue
@@ -266,7 +292,6 @@
 
 
                   // Stop looking through the JSON
-                  break;  
                 }
               }
               console.log("out of loop")
