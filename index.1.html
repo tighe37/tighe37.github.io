@@ -30,13 +30,12 @@
           //saves those numbers to every array. ie saving values to arizona rewrites the values in alabama and every other state
           //because they reference the same array. Do we need to make new arrays for each? 
 
-          var setDrop1map1
           var width = 864;
           var height = 450;
 
-          var drop1map1Val = 0
-          var drop2map1Val = 0
-          var drop3map1Val = 99
+          var drop1map1Val
+          var drop2map1Val
+          var drop3map1Val
 
           // D3 Projection
           var projection = d3.geoAlbersUsa()
@@ -90,9 +89,9 @@
                   var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
                   var gender = ["Female", "Male"]
                   var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
-                  statesArray[p][t] = [ages,education,gender,income,races]
+                  statesArray[p][t] = [ages, education, gender, income, races]
                 }
-                
+
                 json.features[p].properties.year = statesArray[p]
               }
 
@@ -266,7 +265,7 @@
                         break;
                     }
                     if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
-                      console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
+                      //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                     } else {
@@ -295,7 +294,7 @@
                   .style("fill", function (d) {
 
                     // Get data value
-                    var value = d.properties.year;
+                    var value = d.properties.year[0][0][0];
 
                     if (value === "DNE") {
                       //If value exists…
@@ -327,9 +326,8 @@
                       .duration(500)
                       .style("opacity", 0);
                   });
+
               }
-
-
             });
           });
 
@@ -447,15 +445,31 @@
               var addSubs = d3.select("#drop3limap1")
                 .append("a")
                 .text(subArray[subclassVal][k])
-                .attr("onclick", "setDrop3map1(" + k + ")")
+                .attr("onclick", "setDrop3Map1(" + k + ")")
 
             }
             //making the third subclass array which is variable based on a variable
+            
+          }
+          function setDrop3Map1(val) {
+            console.log(val)
+            drop3map1Val = [val].slice(0,1)[0];
+            console.log(drop3map1Val)
           }
 
-          function setDrop3map1(data) {
-            drop3map1Val = data
+          var buildMap1 = d3.select("#map1")
+            .append("button")
+            .attr("class", "button")
+            .attr("onclick", "makemap1(" + drop1map1Val + "," + drop2map1Val + "," + drop3map1Val + ")")
+            .text("Click to build map")
+
+
+          function makemap1(y, c, s) {
+              console.log(y+" "+c+" "+s)
+            
           }
+
+
         </script>
       </div>
       <div id="pcpFrame"></div>
