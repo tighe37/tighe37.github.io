@@ -26,6 +26,9 @@
       <div class="col-lg-6" id="map1">
         <script>
 
+          //document.getElementById("buttonID").onclick =updateMap();
+
+
           //TODO: We have an issue with our arrays where when saving numbers to the json which contains arrays
           //saves those numbers to every array. ie saving values to arizona rewrites the values in alabama and every other state
           //because they reference the same array. Do we need to make new arrays for each? 
@@ -33,9 +36,9 @@
           var width = 864;
           var height = 450;
 
-          var drop1map1Val
-          var drop2map1Val
-          var drop3map1Val
+          var drop1map1Val = 0
+          var drop2map1Val = 0
+          var drop3map1Val = 0
 
           // D3 Projection
           var projection = d3.geoAlbersUsa()
@@ -369,6 +372,8 @@
 
           function setDrop1map1(data) {
             drop1map1Val = data
+            updateMap()
+
           }
           //making the class dropdown boxes
 
@@ -449,24 +454,295 @@
 
             }
             //making the third subclass array which is variable based on a variable
-            
-          }
-          function setDrop3Map1(val) {
-            console.log(val)
-            drop3map1Val = [val].slice(0,1)[0];
-            console.log(drop3map1Val)
+
           }
 
-          var buildMap1 = d3.select("#map1")
-            .append("button")
-            .attr("class", "button")
-            .attr("onclick", "makemap1(" + drop1map1Val + "," + drop2map1Val + "," + drop3map1Val + ")")
-            .text("Click to build map")
+          function setDrop3Map1(val) {
+            //console.log(val)
+            drop3map1Val = val;
+            //console.log(drop3map1Val);
+            updateMap();
+          }
+
+          function updateMap() {
+            console.log(drop3map1Val);
+            console.log(drop2map1Val);
+            console.log(drop1map1Val);
+            makemap1(drop1map1Val, drop2map1Val, drop3map1Val);
+
+          }
+
+
+
+          // var buildMap1 = d3.select("#map1")
+          //   .append("button")
+          //   .attr("class", "button")
+          //   .attr("onclick", "makemap1(" + drop1map1Val + "," + drop2map1Val + "," + drop3map1Val + ")")
+          //   .text("Click to build map")
 
 
           function makemap1(y, c, s) {
-              console.log(y+" "+c+" "+s)
-            
+            var statesArray = Array(51)
+            var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
+            var classArray = ["Age", "Education", "Gender", "Income", "Race"]
+            var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
+            var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
+            var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
+            var gender = ["Female", "Male"]
+            var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+            d3.csv("MapData.csv", function (data) {
+              //color.domain([0, 1, 2, 3]); // setting the range of the input data
+
+              // this will need to be adjusted to add all of the data from the csv ***
+              // Load GeoJSON data and merge with states data
+              d3.json("us-states.json", function (json) {
+                // Loop through each state data value in the .csv file
+                var maxRate = 0;
+                var minRate = 100;
+                for (var p = 0; p < json.features.length; p++) { //state loop
+                  statesArray[p] = Array(5)
+                  for (var t = 0; t < 5; t++) { //loop for each year
+                    var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater", "Data not reported"]
+                    var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65 or older"]
+                    var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
+                    var gender = ["Female", "Male"]
+                    var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
+                    statesArray[p][t] = [ages, education, gender, income, races]
+                  }
+
+                  json.features[p].properties.year = statesArray[p]
+                }
+
+                for (var k = 0; k < json.features.length; k++) {
+                }
+                for (var i = 0; i < data.length; i++) {
+
+                  // Grab State Name/class/subclass/year
+                  var dataValue = data[i].Value;
+                  var dataState = data[i].LocationDesc;
+                  var dataClass = data[i].Class;
+                  var dataSub = data[i].Subclass;
+                  var datayear = data[i].YearStart
+                  var yearIndex = -1
+                  var classIndex = -1
+                  var subIndex = -1
+
+                  // Grab data value
+
+                  if (dataValue > maxRate && dataValue != "DNE") {
+                    maxRate = dataValue
+                  }
+
+                  if (dataValue < minRate && dataValue != "DNE") {
+                    minRate = dataValue
+                  }
+                  // Find the corresponding state inside the GeoJSON
+                  for (var j = 0; j < json.features.length; j++) {
+
+                    var jsonState = json.features[j].properties.name;
+
+                    if (dataState == jsonState) {
+                      //these switches give the indices where to store the data values within the bigArrays 
+                      switch (datayear) {
+                        case "2011":
+                          yearIndex = 0
+                          break;
+                        case "2012":
+                          yearIndex = 1
+                          break;
+                        case "2013":
+                          yearIndex = 2
+                          break;
+                        case "2014":
+                          yearIndex = 3
+                          break;
+                        case "2015":
+                          yearIndex = 4
+                          break;
+                        default:
+                          break;
+                      }
+
+                      switch (dataClass) {
+                        case "Age":
+                          classIndex = 0
+                          switch (dataSub) {
+                            case "18 - 24":
+                              subIndex = 0
+                              break;
+                            case "25 - 34":
+                              subIndex = 1
+                              break;
+                            case "35 - 44":
+                              subIndex = 2
+                              break;
+                            case "45 - 54":
+                              subIndex = 3
+                              break;
+                            case "55 - 64":
+                              subIndex = 4
+                              break;
+                            case "65 or older":
+                              subIndex = 5
+                              break;
+                            default:
+                              break;
+
+                          }
+                          break;
+                        case "Education":
+                          classIndex = 1
+                          switch (data[i].Subclass) {
+                            case "College graduate":
+                              subIndex = 0
+                              break;
+                            case "High school graduate":
+                              subIndex = 1
+                              break;
+                            case "Less than high school":
+                              subIndex = 2
+                              break;
+                            case "Some college or technical school":
+                              subIndex = 3
+                              break;
+                            default:
+                              break;
+                          }
+                          break;
+                        case "Gender":
+                          classIndex = 2
+                          switch (data[i].Subclass) {
+                            case "Female":
+                              subIndex = 0
+                              break;
+                            case "Male":
+                              subIndex = 1
+                              break;
+                            default:
+                              break;
+                          }
+                          break;
+                        case "Income":
+                          classIndex = 3
+                          switch (data[i].Subclass) {
+                            case "$15,000 or Less":
+                              subIndex = 0
+                              break;
+                            case "$15,000 - $24,999":
+                              subIndex = 1
+                              break;
+                            case "$25,000 - $34,999":
+                              subIndex = 2
+                              break;
+                            case "$35,000 - $49,999":
+                              subIndex = 3
+                              break;
+                            case "$50,000 - $74,999":
+                              subIndex = 4
+                              break;
+                            case "$75,000 or greater":
+                              subIndex = 5
+                              break;
+                            case "Data not reported":
+                              subIndex = 6
+                            default:
+                              break;
+                          }
+                          break;
+                        case "Race/Ethnicity":
+                          classIndex = 4
+                          switch (data[i].Subclass) {
+                            case "American Indian/Alaska Native":
+                              subIndex = 0
+                              break;
+                            case "Non-Hispanic Black":
+                              subIndex = 1
+                              break;
+                            case "Non-Hispanic White":
+                              subIndex = 2
+                              break;
+                            case "Asian":
+                              subIndex = 3
+                              break;
+                            case "Hawaiian/Pacific Islander":
+                              subIndex = 4
+                              break;
+                            case "Hispanic":
+                              subIndex = 5
+                              break;
+                            case "2 or more races":
+                              subIndex = 6
+                            case "Other":
+                              subIndex = 7
+                              break;
+                            default:
+                              break;
+                          }
+                          break;
+                        default:
+                          break;
+                      }
+                      if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                        //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
+
+                        json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
+                      } else {
+                        json.features[j].properties.year[yearIndex][classIndex][subIndex] = dataValue
+                      }
+                    }
+
+
+                    // Stop looking through the JSON
+                  }
+                }
+
+
+
+                svg.selectAll("path")
+                  .data(json.features)
+                  .enter()
+                  .append("path")
+                  .attr("d", path)
+                  // .setAttribute("style", "stroke:#fff;stroke-width:1;fill,", function (d) {
+                  .style("stroke", "#fff")
+                  .style("stroke-width", "1")
+                  .style("fill", function (d) {
+
+                   // Get data value
+                    var value = d.properties.year[y][c][s];
+
+                    if (value === "DNE") {
+                      //If value exists…
+                      //If value is und efined…
+                      return "black";
+
+
+                    } else {
+                      //color = d3.interpolateBlues(value / (maxRate / 100))
+                      var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                      return color(value);
+                    }
+                  })
+                svg.selectAll("path")
+                  // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+                  // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                  .on("mouseover", function (d) {
+                    div.transition()
+                      .duration(200)
+                      .style("opacity", .9);
+                    div.text(d.properties.year[y][c][s] + "% of the population in " + d.properties.name + " is obese.")
+                      .style("left", (d3.event.pageX) + "px")
+                      .style("top", (d3.event.pageY - 28) + "px");
+                  })
+
+                  // fade out tooltip on mouse out               
+                  .on("mouseout", function (d) {
+                    div.transition()
+                      .duration(500)
+                      .style("opacity", 0);
+                  });
+              })
+            })
           }
 
 
