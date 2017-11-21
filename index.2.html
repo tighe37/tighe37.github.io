@@ -210,7 +210,7 @@
                       case "Income":
                         classIndex = 3
                         switch (data[i].Subclass) {
-                          case "$15,000 or Less":
+                          case "Less than $15,000":
                             subIndex = 0
                             break;
                           case "$15,000 - $24,999":
@@ -303,12 +303,12 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "black";
+                      return "rgb(255,201,132)";
 
 
                     } else {
                       if (value > 40) {
-                        color=d3.interpolateBlues(1)
+                        color = d3.interpolateBlues(1)
                       } else {
                         color = d3.interpolateBlues(value / 45)
                       }
@@ -627,7 +627,7 @@
                         case "Income":
                           classIndex = 3
                           switch (data[i].Subclass) {
-                            case "$15,000 or Less":
+                            case "Less than $15,000":
                               subIndex = 0
                               break;
                             case "$15,000 - $24,999":
@@ -726,14 +726,14 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "black";
+                      return "rgb(255,201,132)";
 
 
                     } else {
                       console.log(Math.floor(value / 40))
                       console.log(value / 40)
                       if (value > 40) {
-                        color=d3.interpolateBlues(1)
+                        color = d3.interpolateBlues(1)
                       } else {
                         color = d3.interpolateBlues(value / 45)
                       }
@@ -949,7 +949,7 @@
                       case "Income":
                         classIndex = 3
                         switch (data[i].Subclass) {
-                          case "$15,000 or Less":
+                          case "Less than $15,000":
                             subIndex = 0
                             break;
                           case "$15,000 - $24,999":
@@ -1038,13 +1038,13 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "black";
+                      return "rgb(255,201,132)";
 
 
                     } else {
                       //color = d3.interpolateBlues(value / (maxRate / 100))
                       if (value > 40) {
-                        color=d3.interpolateBlues(1)
+                        color = d3.interpolateBlues(1)
                       } else {
                         color = d3.interpolateBlues(value / 45)
                       }
@@ -1350,7 +1350,7 @@
                         case "Income":
                           classIndex = 3
                           switch (data[i].Subclass) {
-                            case "$15,000 or Less":
+                            case "Less than $15,000":
                               subIndex = 0
                               break;
                             case "$15,000 - $24,999":
@@ -1449,13 +1449,13 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "black";
+                      return "rgb(255,201,132)";
 
 
                     } else {
 
                       if (value > 40) {
-                        color=d3.interpolateBlues(1)
+                        color = d3.interpolateBlues(1)
                       } else {
                         color = d3.interpolateBlues(value / 45)
                       }
