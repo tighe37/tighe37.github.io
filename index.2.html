@@ -374,7 +374,7 @@
 
           function setDrop1map1(data) {
             drop1map1Val = data
-            updateMap()
+            updateMap1()
 
           }
           //making the class dropdown boxes
@@ -442,7 +442,6 @@
             .attr("id", "drop3listmap1");
 
           function makeDrop3map1(subclassVal) {
-            console.log(subclassVal)
             d3.selectAll("#drop3limap1").remove()
             var dropSubs = d3.select("#drop3listmap1")
               .append("li")
@@ -464,10 +463,10 @@
             //console.log(val)
             drop3map1Val = val;
             //console.log(drop3map1Val);
-            updateMap();
+            updateMap1();
           }
 
-          function updateMap() {
+          function updateMap1() {
             makemap1(drop1map1Val, drop2map1Val, drop3map1Val);
 
           }
@@ -1162,7 +1161,7 @@
 
           function setDrop1map2(data) {
             drop1map2Val = data
-            updateMap()
+            updateMap2()
 
           }
           //making the class dropdown boxes
@@ -1251,10 +1250,10 @@
             //console.log(val)
             drop3map2Val = val;
             //console.log(drop3map2Val);
-            updateMap();
+            updateMap2();
           }
 
-          function updateMap() {
+          function updateMap2() {
             makemap2(drop1map2Val, drop2map2Val, drop3map2Val);
 
           }

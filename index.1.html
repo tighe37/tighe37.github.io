@@ -760,7 +760,7 @@
       <script>
         var income = ["Less than $15,000", "$15,000 - $24,999", "$25,000 - $34,999", "$35,000 - $49,999", "$50,000 - $74,999", "$75,000 or greater"]
         var ages = ["18 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 64", "65-100"]
-        var races = ["American In dian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
+        var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "Data not reported", "2 or More Races", "Other"]
         var gender = ["Male", "Female"]
 
         // https://raw.githubusercontent.com/bcdunbar/datasets/master/iris.csv
@@ -828,13 +828,13 @@
         <script>
           //Gotta find a way to make the map sizes change with the screen zoom
           //so they stop going into tabular mode
-          var width = width;
+          var width = 864;
           var height = 450;
 
           //drop down box values
-          var drop1Map2Val = 0
-          var drop2Map2Val = 0
-          var drop3Map2Val = 99
+          var drop1map2Val = 0
+          var drop2map2Val = 0
+          var drop3map2Val = 0
           // D3 Projection
           var projection = d3.geoAlbersUsa()
             .translate([width / 2, height / 2])    // translate to center of screen
