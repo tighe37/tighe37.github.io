@@ -73,7 +73,7 @@
           var races = ["American Indian/Alaska Native", "Non-Hispanic Black", "Non-Hispanic White", "Asian", "Hawaiian/Pacific Islander", "Hispanic", "2 or More Races", "Other"]
           var gender = ["Female", "Male"]
           var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
-          var subArray = [ages, education, gender, income, races]
+          var subArray =[ages,education,gender,income,races]
 
           d3.csv("MapData.csv", function (data) {
             //color.domain([0, 1, 2, 3]); // setting the range of the input data
@@ -210,7 +210,7 @@
                       case "Income":
                         classIndex = 3
                         switch (data[i].Subclass) {
-                          case "Less than $15,000":
+                          case "$15,000 or Less":
                             subIndex = 0
                             break;
                           case "$15,000 - $24,999":
@@ -285,9 +285,9 @@
 
               //TODO: currently does not show totals, need to import ObesityTotalByStateAndYear.csv and use that data properly
               //to show totals data. Should we allow users to look at totals? it would require another button without a doubt.
-              drawTotalsMap1()
+              drawTotalsMap1(json)
               // Bind the data to the SVG and create one path per GeoJSON feature
-              function drawTotalsMap1() {
+              function drawTotalsMap1(json) {
                 svg.selectAll("path")
                   .data(json.features)
                   .enter()
@@ -303,17 +303,13 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "rgb(255,201,132)";
+                      return "black";
 
 
                     } else {
-                      if (value > 40) {
-                        color = d3.interpolateBlues(1)
-                      } else {
-                        color = d3.interpolateBlues(value / 45)
-                      }
-                      //var color = d3.scaleLinear().domain([0, 60]).range(["white", "steelblue"])
-                      return color//(value);
+                      //color = d3.interpolateBlues(value / (maxRate / 100))
+                      var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                      return color(value);
                     }
                   })
                 svg.selectAll("path")
@@ -323,7 +319,7 @@
                     div.transition()
                       .duration(200)
                       .style("opacity", .9);
-                    div.text(d.properties.name + ": " + d.properties.year[0][0][0] + "%")
+                    div.text(d.properties.year + "% of the population in " + d.properties.name + " is obese.")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
@@ -627,7 +623,7 @@
                         case "Income":
                           classIndex = 3
                           switch (data[i].Subclass) {
-                            case "Less than $15,000":
+                            case "$15,000 or Less":
                               subIndex = 0
                               break;
                             case "$15,000 - $24,999":
@@ -730,20 +726,15 @@
 
 
                     } else {
-                      console.log(Math.floor(value / 40))
-                      console.log(value / 40)
-                      if (value > 40) {
-                        color = d3.interpolateBlues(1)
-                      } else {
-                        color = d3.interpolateBlues(value / 45)
-                      }
+
+                      color = d3.interpolateBlues(value / maxRate)
                       // var color = d3.scaleLinear().domain([minRate-5, maxRate+5]).range(["rgb(66, 127, 178)", "rgb(0, 0, 94)"])
                       return color//(value);  
                     }
                   })
-                //TODO: for the tooltips it may be possible to make it function similar to the json storage
-                //embedded arrays thay spit out different text depending on what is selected. 
-
+                  //TODO: for the tooltips it may be possible to make it function similar to the json storage
+                  //embedded arrays thay spit out different text depending on what is selected. 
+                  
                 svg.selectAll("path")
                   // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
                   // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
@@ -751,7 +742,7 @@
                     div.transition()
                       .duration(200)
                       .style("opacity", .9);
-                    div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
+                    div.text(d.properties.year[y][c][s] + "% of the population in " + d.properties.name + " is obese.")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
@@ -949,7 +940,7 @@
                       case "Income":
                         classIndex = 3
                         switch (data[i].Subclass) {
-                          case "Less than $15,000":
+                          case "$15,000 or Less":
                             subIndex = 0
                             break;
                           case "$15,000 - $24,999":
@@ -1038,17 +1029,13 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "rgb(255,201,132)";
+                      return "black";
 
 
                     } else {
                       //color = d3.interpolateBlues(value / (maxRate / 100))
-                      if (value > 40) {
-                        color = d3.interpolateBlues(1)
-                      } else {
-                        color = d3.interpolateBlues(value / 45)
-                      }
-                      return color//(value);
+                      var color = d3.scaleLinear().domain([minRate - 5, maxRate]).range(["white", "steelblue"])
+                      return color(value);
                     }
                   })
                 svg2.selectAll("path")
@@ -1058,7 +1045,7 @@
                     div.transition()
                       .duration(200)
                       .style("opacity", .9);
-                    div.text(d.properties.name + ": " + d.properties.year[0][0][0] + "%")
+                    div.text(d.properties.year + "% of the population in " + d.properties.name + " is obese.")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
@@ -1072,7 +1059,7 @@
 
               }
             })
-          })
+          })  
           var dropdowns = d3.select("#map2")
             .append("div")
             .attr("class", "dropdown")
@@ -1350,7 +1337,7 @@
                         case "Income":
                           classIndex = 3
                           switch (data[i].Subclass) {
-                            case "Less than $15,000":
+                            case "$15,000 or Less":
                               subIndex = 0
                               break;
                             case "$15,000 - $24,999":
@@ -1449,16 +1436,12 @@
                     if (value === "DNE") {
                       //If value exists…
                       //If value is und efined…
-                      return "rgb(255,201,132)";
+                      return "black";
 
 
                     } else {
 
-                      if (value > 40) {
-                        color = d3.interpolateBlues(1)
-                      } else {
-                        color = d3.interpolateBlues(value / 45)
-                      }
+                      color = d3.interpolateBlues(value / maxRate)
                       // var color = d3.scaleLinear().domain([minRate-5, maxRate+5]).range(["rgb(66, 127, 178)", "rgb(0, 0, 94)"])
                       return color//(value);  
                     }
@@ -1470,7 +1453,7 @@
                     div.transition()
                       .duration(200)
                       .style("opacity", .9);
-                    div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
+                    div.text(d.properties.year[y][c][s] + "% of the population in " + d.properties.name + " is obese.")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
@@ -1489,7 +1472,7 @@
           //   .attr("class", "button")
           //   .attr("onclick", "makemap2(" + drop1map2Val + "," + drop2map2Val + "," + drop3map2Val + ")")
           //   .text("Click to build map")
-
+      
 
           // d3.csv("MapData.csv", function (data) {
           //   //color.domain([0, 1, 2, 3]); // setting the range of the input data
@@ -1815,7 +1798,7 @@
           // }
 
 
-
+        
         </script>
       </div>
     </div>
