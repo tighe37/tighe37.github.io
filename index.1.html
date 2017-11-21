@@ -465,9 +465,6 @@
           }
 
           function updateMap() {
-            console.log(drop3map1Val);
-            console.log(drop2map1Val);
-            console.log(drop1map1Val);
             makemap1(drop1map1Val, drop2map1Val, drop3map1Val);
 
           }
@@ -703,11 +700,11 @@
                   .enter()
                   .append("path")
                   .attr("d", path)
-                  // .setAttribute("style", "stroke:#fff;stroke-width:1;fill,", function (d) {
                   .style("stroke", "#fff")
-                  .style("stroke-width", "1")
-                  .style("fill", function (d) {
-
+                  .style("stroke-width", "6")
+                  .setAttribute("fill",function(d){
+                  // .style("fill", function (d) {
+                    console.log("in function")
                    // Get data value
                     var value = d.properties.year[y][c][s];
 
