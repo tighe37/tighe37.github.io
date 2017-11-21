@@ -496,9 +496,9 @@ dc.errors.BadArgumentException.prototype.constructor = dc.errors.BadArgumentExce
  * @name dateFormat
  * @memberof dc
  * @type {Function}
- * @default d3.time.format('%m/%d/%Y')
+ * @default d3.timeFormat('%m/%d/%Y')
  */
-dc.dateFormat = d3.time.format('%m/%d/%Y');
+dc.dateFormat = d3.timeFormat('%m/%d/%Y');
 
 /**
  * @namespace printers
