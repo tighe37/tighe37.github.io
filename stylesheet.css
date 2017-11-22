@@ -4,18 +4,25 @@ path:hover {
 }
 
 /* Style for Custom Tooltip */
-div.tooltip {   
+div.tooltip{   
+	content: " ";
  	position: absolute;           
 	text-align: center;           
-	width: 160px;                  
-	height: 18px;                 
+	width: auto;                  
+	height: auto;                 
 	padding: 2px;             
 	font: 15px sans-serif;   
 	color: white;     
 	background: rgb(85, 85, 85);   
 	border: 0px;      
 	border-radius: 8px;           
-	pointer-events: none;         
+	pointer-events: none;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(85, 85, 85);    
 }
         
 /* Legend Font Style */
