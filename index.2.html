@@ -372,8 +372,23 @@
             var addSubs = d3.select("#drop1limap1")
               .append("a")
               .text(yearsArray[k])
-              .attr("onclick", "setDrop1map1(" + k + ")")
+              .attr("onclick", "setDrop1map1(" + k + ");changedrop1map1(" + k + ")")
           }
+          function changedrop1map1(j) {
+            $("#drop1buttonmap1")
+              .remove()
+
+            var button = d3.select("#drop1map1")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(yearsArray[j])
+              .attr("id", "drop1buttonmap1");
+            var span = d3.select("#drop1buttonmap1")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop1map1(data) {
             drop1map1Val = data
@@ -412,14 +427,30 @@
             var addSubs = d3.select("#drop2limap1")
               .append("a")
               .text(classArray[j])
-              .attr("onclick", "makeDrop3map1(" + j + ");setDrop2map1(" + j + ")")
+              .attr("onclick", "makeDrop3map1(" + j + ");setDrop2map1(" + j + ");changedrop2map1(" + j + ")")
 
 
           }
+
+          function changedrop2map1(j) {
+            $("#drop2buttonmap1")
+              .remove()
+
+            var button = d3.select("#drop2map1")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(classArray[j])
+              .attr("id", "drop2buttonmap1");
+            var span = d3.select("#drop2buttonmap1")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop2map1(data) {
             drop2map1Val = data
-          }
+          };
 
 
           var dropdowns = d3.select("#map1")
@@ -455,12 +486,28 @@
               var addSubs = d3.select("#drop3limap1")
                 .append("a")
                 .text(subArray[subclassVal][k])
-                .attr("onclick", "setDrop3Map1(" + k + ")")
+                .attr("onclick", "setDrop3Map1(" + k + ");changedrop3map1("+k+","+subclassVal+")")
 
             }
             //making the third subclass array which is variable based on a variable
 
           }
+
+          function changedrop3map1(j,subClassVal) {
+            $("#drop3buttonmap1")
+              .remove()
+
+            var button = d3.select("#drop3map1")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(subArray[subClassVal][j])
+              .attr("id", "drop3buttonmap1");
+            var span = d3.select("#drop3buttonmap1")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop3Map1(val) {
             //console.log(val)
@@ -1103,8 +1150,24 @@
             var addSubs = d3.select("#drop1limap2")
               .append("a")
               .text(yearsArray[k])
-              .attr("onclick", "setDrop1map2(" + k + ")")
+              .attr("onclick", "setDrop1map2(" + k + ");changedrop1map2("+k+")")
           }
+
+          function changedrop1map2(j) {
+            $("#drop1buttonmap2")
+              .remove()
+
+            var button = d3.select("#drop1map2")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(yearsArray[j])
+              .attr("id", "drop1buttonmap2");
+            var span = d3.select("#drop1buttonmap2")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop1map2(data) {
             drop1map2Val = data
@@ -1143,10 +1206,26 @@
             var addSubs = d3.select("#drop2limap2")
               .append("a")
               .text(classArray[j])
-              .attr("onclick", "makeDrop3map2(" + j + ");setDrop2map2(" + j + ")")
+              .attr("onclick", "makeDrop3map2(" + j + ");setDrop2map2(" + j + ");changedrop2map2("+j+")")
 
 
           }
+
+          function changedrop2map2(j) {
+            $("#drop2buttonmap2")
+              .remove()
+
+            var button = d3.select("#drop2map2")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(classArray[j])
+              .attr("id", "drop2buttonmap2");
+            var span = d3.select("#drop2buttonmap2")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop2map2(data) {
             drop2map2Val = data
@@ -1186,12 +1265,28 @@
               var addSubs = d3.select("#drop3limap2")
                 .append("a")
                 .text(subArray[subclassVal][k])
-                .attr("onclick", "setDrop3map2(" + k + ")")
+                .attr("onclick", "setDrop3map2(" + k + ");changedrop3map2("+k+","+subclassVal+")")
 
             }
             //making the third subclass array which is variable based on a variable
 
           }
+
+          function changedrop3map2(j,subClassVal) {
+            $("#drop3buttonmap2")
+              .remove()
+
+            var button = d3.select("#drop3map2")
+              .append("button")
+              .attr("class", "btn btn-primary dropdown-toggle")
+              .attr("type", "button")
+              .attr("data-toggle", "dropdown")
+              .text(subArray[subClassVal][j])
+              .attr("id", "drop3buttonmap2");
+            var span = d3.select("#drop3buttonmap2")
+              .append("span")
+              .attr("class", "caret")
+          };
 
           function setDrop3map2(val) {
             //console.log(val)
