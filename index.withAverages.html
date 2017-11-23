@@ -13,6 +13,8 @@
   <script src="d3.v4.min.js"></script>
   <script src="d3-scale-chromatic.v1.min.js"></script>
   <script src="plotly-latest.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
 </head>
 
 <body>
@@ -346,8 +348,9 @@
                 d3.select("#map1")
                   .append("div")
                   .attr("id", "avg1")
-                  .attr("ALIGN", "right")
-                  .text("Average Obesity Rate:" + avg.toFixed(3))
+                  .attr("ALIGN", "center")
+                  .attr("style", "font-size:20px;color:black")
+                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
               }
             });
           });
@@ -742,7 +745,7 @@
                         default:
                           break;
                       }
-                      if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                      if (dataValue != "No Data" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
 
                         json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                       } else {
@@ -830,20 +833,551 @@
                 d3.select("#map1")
                   .append("div")
                   .attr("id", "avg1")
-                  .attr("ALIGN", "right")
-                  .text("Average Obesity Rate:" + avg.toFixed(3))
+                  .attr("ALIGN", "center")
+                  .attr("style", "font-size:20px;color:black")
+                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
+
+                var statenames = Array(51)
+                for (var i = 0; i < json.features.length; i++) {
+                  statenames[i] = json.features[i].properties.name
+                }
+                chartjson = Array(51)
+                for (var i = 0; i < chartjson.length; i++) {
+                  chartjson[i] = []
+                }
+
+                for (var j = 0; j < 5; j++) {
+                  for (var i = 0; i < json.features.length; i++) {
+                    var year = yearsArray[j];
+                    var val = (json.features[i].properties.year[j][c][s])
+                    console.log(val)
+                    if(val==="No Data"){
+                      val=0
+                    }
+                    console.log(val)
+
+                    item = {}
+                    item["x"] = year
+                    item["y"] = val
+
+                    chartjson[i].push(item)
+                  }
+                }
+                console.log(statenames)
+
+                var chart = new CanvasJS.Chart("chartContainer1", {
+                  animationEnabled: false,
+                  title: {
+                    text: "Select States to View"
+                  },
+                  axisX: {
+                    scaleOverride: true,
+                    scaleSteps: 1,
+                    minimum: 2011,
+                    maximum: 2015,
+                    valueFormatString: "####",
+                    interval: 1
+                  },
+                  axisY2: {
+                    title: "% Obesity",
+                    suffix: "%",
+                    minimum: 0,
+                  },
+                  toolTip: {
+                    shared: true
+                    
+                  },
+                  legend: {
+                    cursor: "pointer",
+                    verticalAlign: "top",
+                    horizontalAlign: "center",
+                    dockInsidePlotArea: false,
+                    itemclick:toogleDataSeries
+                  },
+                  data: [{
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Alabama",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[0],
+                    visible:false
+                    
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Alaska",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[1],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Arizona",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[2],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Arkansas",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[3],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "California",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[4],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Colorado",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[5],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Connecticut",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[6],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Delaware",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[7],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "District of Columbia",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[8],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Florida",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[9],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Georgia",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[10],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Hawaii",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[11],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Idaho",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[12],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Illinois",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[13],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Indiana",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[14],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Iowa",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[15],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Kansas",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[16],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Kentucky",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[17],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Luisiana",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[18],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Maine",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[19],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Maryland",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[20],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Massachusetts",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[21],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Michigan",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[22],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Minnesota",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[23],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Mississippi",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[24],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Missouri",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[25],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Montana",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[26],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Nebraska",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[27],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Nevada",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[28],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "New Hampshire",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[29],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "New Jersey",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[30],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "New Mexico",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[31],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "New York",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[32],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "North Carolina",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[33],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "North Dakota",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[34],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Ohio",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[35],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Oklahoma",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[36],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Oregon",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[37],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Pennsylvania",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[38],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Rhode Island",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[39],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "South Carolina",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[40],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "South Dakota",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[41],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Tennessee",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[42],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Texas",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[43],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Utah",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[44],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Vermont",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[45],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Virginia",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[46],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Washington",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[47],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "West Virginia",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[48],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Wisconsin",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[49],
+                    visible:false
+                  },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    name: "Wyoming",
+                    showInLegend:true,
+                    markerSize: 0,
+                    dataPoints: chartjson[50],
+                    visible:false
+                  },
+                  ]
+
+
+                })
+                chart.render()
+
+                function toogleDataSeries(e) {
+                  if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                  } else {
+                    e.dataSeries.visible = true;
+                  }
+                  chart.render();
+                }
+
               })
             })
 
+
           }
-
-
         </script>
       </div>
       <div class="col-lg-6" id="map2">
         <script>
-          //Gotta find a way to make the map sizes change with the screen zoom
-          //so they stop going into tabular mode
           var width = 864;
           var height = 450;
 
@@ -1150,9 +1684,10 @@
 
                 d3.select("#map2")
                   .append("div")
-                  .attr("id", "avg2")
-                  .attr("ALIGN", "right")
-                  .text("Average Obesity Rate:" + avg.toFixed(3))
+                  .attr("id", "avg1")
+                  .attr("ALIGN", "center")
+                  .attr("style", "font-size:20px;color:black")
+                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
 
               }
             })
@@ -1622,9 +2157,10 @@
 
                 d3.select("#map2")
                   .append("div")
-                  .attr("id", "avg2")
-                  .attr("ALIGN", "right")
-                  .text("Average Obesity Rate:" + avg.toFixed(3))
+                  .attr("id", "avg1")
+                  .attr("ALIGN", "center")
+                  .attr("style", "font-size:20px;color:black")
+                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
 
               })
             })
@@ -1968,7 +2504,10 @@
       </div>
     </div>
   </div>
+  <div id="chartContainer1" style="height:500px;width:50%"></div>
+  <div id="chartContainer2" style="height:500px;width:50%"></div>
+
 
 </body>
 
-</html>)
+</html>
