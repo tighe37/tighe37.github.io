@@ -269,7 +269,6 @@
                         break;
                     }
                     if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
-                      //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                     } else {
@@ -335,7 +334,20 @@
                       .duration(500)
                       .style("opacity", 0);
                   });
+                var avg = 0
+                var sum = 0
+                for (var a = 0; a < json.features.length; a++) {
+                  sum = json.features[a].properties.year[drop1map1Val][drop2map1Val][drop3map1Val] + sum
+                }
+                avg = sum / 51
+                d3.select("#avg1")
+                  .remove()
 
+                d3.select("#map1")
+                  .append("div")
+                  .attr("id", "avg1")
+                  .attr("ALIGN", "right")
+                  .text("Average Obesity Rate:" + avg.toFixed(3))
               }
             });
           });
@@ -511,9 +523,7 @@
           };
 
           function setDrop3Map1(val) {
-            //console.log(val)
             drop3map1Val = val;
-            //console.log(drop3map1Val);
             updateMap1();
           }
 
@@ -733,7 +743,6 @@
                           break;
                       }
                       if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
-                        //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                         json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                       } else {
@@ -759,7 +768,6 @@
                   .style("stroke-width", "1")
                   .style("fill", function (d) {
                     // .style("fill", function (d) {
-                    console.log("in function")
                     // Get data value
                     var value = d.properties.year[y][c][s];
 
@@ -778,8 +786,6 @@
 
 
                     } else {
-                      console.log(Math.floor(value / 40))
-                      console.log(value / 40)
                       if (value > 40) {
                         color = d3.interpolateBlues(1)
                       } else {
@@ -810,9 +816,24 @@
                       .duration(500)
                       .style("opacity", 0);
                   });
+
+
+                var avg = 0
+                var sum = 0
+                for (var a = 0; a < json.features.length; a++) {
+                  sum = json.features[a].properties.year[y][c][s] + sum
+                }
+                avg = sum / 51
+                d3.select("#avg1")
+                  .remove()
+
+                d3.select("#map1")
+                  .append("div")
+                  .attr("id", "avg1")
+                  .attr("ALIGN", "right")
+                  .text("Average Obesity Rate:" + avg.toFixed(3))
               })
             })
-
 
           }
 
@@ -1057,7 +1078,6 @@
                         break;
                     }
                     if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
-                      //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                     } else {
@@ -1069,10 +1089,9 @@
                   // Stop looking through the JSON
                 }
               }
-
-              drawTotalsMap1(json)
+              drawTotalsMap2()
               // Bind the data to the SVG and create one path per GeoJSON feature
-              function drawTotalsMap1(json) {
+              function drawTotalsMap2() {
                 svg2.selectAll("path")
                   .data(json.features)
                   .enter()
@@ -1120,17 +1139,20 @@
                       .style("opacity", 0);
                   });
 
-                // var avg = 0
-                // var sum = 0
-                // for (var a = 0; a < json.features.length; a++) {
-                //   sum = json.features[a].properties.year[drop1map1Val][drop2map1Val][drop3map1Val] + sum
-                // }
-                // avg = sum / 51
-                // d3.select("#map1")
-                //   .append("div")
-                //   .attr("ALIGN", "right")
-                //   .text("Average Obesity Rate:" + avg.toFixed(3))
+                var avg = 0
+                var sum = 0
+                for (var a = 0; a < json.features.length; a++) {
+                  sum = json.features[a].properties.year[drop1map1Val][drop2map1Val][drop3map1Val] + sum
+                }
+                avg = sum / 51
+                d3.select("#avg2")
+                  .remove()
 
+                d3.select("#map2")
+                  .append("div")
+                  .attr("id", "avg2")
+                  .attr("ALIGN", "right")
+                  .text("Average Obesity Rate:" + avg.toFixed(3))
 
               }
             })
@@ -1306,9 +1328,7 @@
           };
 
           function setDrop3map2(val) {
-            //console.log(val)
             drop3map2Val = val;
-            //console.log(drop3map2Val);
             updateMap2();
           }
 
@@ -1520,7 +1540,6 @@
                           break;
                       }
                       if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
-                        //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                         json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
                       } else {
@@ -1546,7 +1565,6 @@
                   .style("stroke-width", "1")
                   .style("fill", function (d) {
                     // .style("fill", function (d) {
-                    console.log("in function")
                     // Get data value
                     var value = d.properties.year[y][c][s];
 
@@ -1593,8 +1611,26 @@
                       .duration(500)
                       .style("opacity", 0);
                   });
+                var avg = 0
+                var sum = 0
+                for (var a = 0; a < json.features.length; a++) {
+                  sum = json.features[a].properties.year[y][c][s] + sum
+                }
+                avg = sum / 51
+                d3.select("#avg2")
+                  .remove()
+
+                d3.select("#map2")
+                  .append("div")
+                  .attr("id", "avg2")
+                  .attr("ALIGN", "right")
+                  .text("Average Obesity Rate:" + avg.toFixed(3))
+
               })
             })
+
+
+
           }
           // var buildmap2 = d3.select("#map2")
           //   .append("button")
@@ -1935,4 +1971,4 @@
 
 </body>
 
-</html>
+</html>)
