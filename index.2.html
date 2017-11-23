@@ -115,11 +115,11 @@
 
                 // Grab data value
 
-                if (dataValue > maxRate && dataValue != "DNE") {
+                if (dataValue > maxRate && dataValue != "No Data") {
                   maxRate = dataValue
                 }
 
-                if (dataValue < minRate && dataValue != "DNE") {
+                if (dataValue < minRate && dataValue != "No Data") {
                   minRate = dataValue
                 }
                 // Find the corresponding state inside the GeoJSON
@@ -268,7 +268,7 @@
                       default:
                         break;
                     }
-                    if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                    if (dataValue != "No Data" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
                       //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
@@ -301,7 +301,7 @@
                     // Get data value
                     var value = d.properties.year[0][0][0];
 
-                    if (value === "DNE") {
+                    if (value === "No Data") {
                       //If value exists…
                       //If value is und efined…
                       return "rgb(255,201,132)";
@@ -579,11 +579,11 @@
 
                   // Grab data value
 
-                  if (dataValue > maxRate && dataValue != "DNE") {
+                  if (dataValue > maxRate && dataValue != "No Data") {
                     maxRate = dataValue
                   }
 
-                  if (dataValue < minRate && dataValue != "DNE") {
+                  if (dataValue < minRate && dataValue != "No Data") {
                     minRate = dataValue
                   }
                   // Find the corresponding state inside the GeoJSON
@@ -732,7 +732,7 @@
                         default:
                           break;
                       }
-                      if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                      if (dataValue != "No Data" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
                         //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                         json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
@@ -763,15 +763,15 @@
                     // Get data value
                     var value = d.properties.year[y][c][s];
 
-                    if (value > maxRate && value != "DNE") {
+                    if (value > maxRate && value != "No Data") {
                       maxRate = value
                     }
 
-                    if (value < minRate && value != "DNE") {
+                    if (value < minRate && value != "No Data") {
                       minRate = value
                     }
 
-                    if (value === "DNE") {
+                    if (value === "No Data") {
                       //If value exists…
                       //If value is und efined…
                       return "rgb(255,201,132)";
@@ -903,11 +903,11 @@
 
                 // Grab data value
 
-                if (dataValue > maxRate && dataValue != "DNE") {
+                if (dataValue > maxRate && dataValue != "No Data") {
                   maxRate = dataValue
                 }
 
-                if (dataValue < minRate && dataValue != "DNE") {
+                if (dataValue < minRate && dataValue != "No Data") {
                   minRate = dataValue
                 }
                 // Find the corresponding state inside the GeoJSON
@@ -1056,7 +1056,7 @@
                       default:
                         break;
                     }
-                    if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                    if (dataValue != "No Data" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
                       //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                       json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
@@ -1085,7 +1085,7 @@
                     // Get data value
                     var value = d.properties.year[0][0][0];
 
-                    if (value === "DNE") {
+                    if (value === "No Data") {
                       //If value exists…
                       //If value is und efined…
                       return "rgb(255,201,132)";
@@ -1366,11 +1366,11 @@
 
                   // Grab data value
 
-                  if (dataValue > maxRate && dataValue != "DNE") {
+                  if (dataValue > maxRate && dataValue != "No Data") {
                     maxRate = dataValue
                   }
 
-                  if (dataValue < minRate && dataValue != "DNE") {
+                  if (dataValue < minRate && dataValue != "No Data") {
                     minRate = dataValue
                   }
                   // Find the corresponding state inside the GeoJSON
@@ -1519,7 +1519,7 @@
                         default:
                           break;
                       }
-                      if (dataValue != "DNE" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
+                      if (dataValue != "No Data" && yearIndex >= 0 && classIndex >= 0 && subIndex >= 0) {
                         //console.log("jsonState: " + jsonState + " dataState:" + dataState + " year:" + yearIndex + " class:" + classIndex + " subclass:" + subIndex + "Value" + dataValue + " I:" + i)
 
                         json.features[j].properties.year[yearIndex][classIndex][subIndex] = parseFloat(dataValue)
@@ -1550,15 +1550,15 @@
                     // Get data value
                     var value = d.properties.year[y][c][s];
 
-                    if (value > maxRate && value != "DNE") {
+                    if (value > maxRate && value != "No Data") {
                       maxRate = value
                     }
 
-                    if (value < minRate && value != "DNE") {
+                    if (value < minRate && value != "No Data") {
                       minRate = value
                     }
 
-                    if (value === "DNE") {
+                    if (value === "No Data") {
                       //If value exists…
                       //If value is und efined…
                       return "rgb(255,201,132)";
@@ -1621,11 +1621,11 @@
 
           //       // Grab data value
           //       var dataValue = data[i].twoeleven;
-          //       if (dataValue > maxRate && dataValue != "DNE") {
+          //       if (dataValue > maxRate && dataValue != "No Data") {
           //         maxRate = dataValue
           //       }
 
-          //       if (dataValue < minRate && dataValue != "DNE") {
+          //       if (dataValue < minRate && dataValue != "No Data") {
           //         minRate = dataValue
           //       }
           //       // Find the corresponding state inside the GeoJSON
@@ -1657,7 +1657,7 @@
           //         // Get data value
           //         var value = d.properties.year;
 
-          //         if (value === "DNE") {
+          //         if (value === "No Data") {
           //           //If value exists…
           //           //If value is undefined…
           //           return "black";
@@ -1855,11 +1855,11 @@
 
           //         // Grab data value
           //         var dataValue = data[i].twoeleven;
-          //         if (dataValue > maxRate && dataValue != "DNE") {
+          //         if (dataValue > maxRate && dataValue != "No Data") {
           //           maxRate = dataValue
           //         }
 
-          //         if (dataValue < minRate && dataValue != "DNE") {
+          //         if (dataValue < minRate && dataValue != "No Data") {
           //           minRate = dataValue
           //         }
           //         // Find the corresponding state inside the GeoJSON
@@ -1890,7 +1890,7 @@
           //           // Get data value
           //           var value = d.properties.year;
 
-          //           if (value === "DNE") {
+          //           if (value === "No Data") {
           //             //If value exists…
           //             //If value is undefined…
           //             return "black";
