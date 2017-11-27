@@ -131,6 +131,7 @@
 
                   if (dataState == jsonState) {
                     //these switches give the indices where to store the data values within the bigArrays 
+                    //append the data to the Json
                     switch (datayear) {
                       case "2011":
                         yearIndex = 0
@@ -295,6 +296,8 @@
 
 
           //making the years dropdown box
+          //Seperates the drop downs by Map and By which class or dropdown is currently being changed.
+          //Drop1 is the Year, Drop2 is the Class, Drop3 is the SubClass
           var dropdowns = d3.select("#map1")
             .append("div")
             .attr("class", "dropdown")
@@ -343,6 +346,7 @@
               .attr("class", "caret")
           };
 
+          //updates the map when the dropdowns are selected and changed.
           function setDrop1map1(data) {
             drop1map1Val = data
             updateMap1()
@@ -934,6 +938,8 @@
                     title: "% Obesity",
                     suffix: "%",
                     minimum: 0,
+                    titleFontSize: 20,
+                    titleFontFamily: "tahoma"
                   },
                   toolTip: {
                     shared: false,
@@ -2408,6 +2414,8 @@
                     title: "% Obesity",
                     suffix: "%",
                     minimum: 0,
+                    titleFontSize: 20,
+                    titleFontFamily: "tahoma"
                   },
                   toolTip: {
                     shared: false,
@@ -2889,8 +2897,6 @@
                     visible: false
                   },
                   ]
-
-
                 })
                 chart.render()
 
@@ -2906,9 +2912,6 @@
 
               })
             })
-
-
-
           }
         </script>
       </div>
