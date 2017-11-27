@@ -24,7 +24,7 @@
 
   </div>
 
-  <div class="container" width=50%>
+  <div class="container">
     <div class="row">
       <div class="col-lg-6" id="map1">
         <script>
@@ -749,6 +749,7 @@
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
+                .on("click",toogleDataSeries)
 
                   // fade out tooltip on mouse out               
                   .on("mouseout", function (d) {
