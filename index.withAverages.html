@@ -342,6 +342,98 @@
                   sum = json.features[a].properties.year[drop1map1Val][drop2map1Val][drop3map1Val] + sum
                 }
                 avg = sum / 51
+                var map1TitleLine1 = "";
+                if(drop2map1Val == 0){
+                  if(drop3map1Val == 0){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 18-24";
+                  }
+                  else if(drop3map1Val == 1){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 25-34";
+                  }
+                  else if(drop3map1Val == 2){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 35-44";
+                  }
+                  else if(drop3map1Val == 3){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 45-54";
+                  }
+                  else if(drop3map1Val == 4){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 55-64";
+                  }
+                  else if(drop3map1Val == 5){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 65 or Older";
+                  }
+                }
+                if(drop2map1Val == 1){
+                  if(drop3map1Val == 0){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with a College Education";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with a High School Education";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with Less Than a High School Education";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with Some College or Technical School Education";
+                  }
+                }
+                if(drop2map1Val == 2){
+                  if(drop3map1Val == 0){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Females";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Males";
+                  }
+                }
+                if(drop2map1Val == 3){
+                  if(drop3map1Val == 0){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of Less than $15,000";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $15,000 to $24,999";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $25,000 to $34,999";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $35,000 to $49,999";
+                  }
+                  if(drop3map1Val == 4){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $50,000 to $74,999";
+                  }
+                  if(drop3map1Val == 5){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $75,000 or Greater";
+                  }
+                }
+                if(drop2map1Val == 4){
+                  if(drop3map1Val == 0){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as American Indian or Alaska Native";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Non-Hispanic Black";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Non-Hispanic White";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Asian";
+                  }
+                  if(drop3map1Val == 4){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Hawaiian or Pacific Islander";
+                  }
+                  if(drop3map1Val == 5){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Hispanic";
+                  }
+                 if(drop3map1Val == 6){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Two or More Races";
+                  }
+                if(drop3map1Val == 7){
+                    map1TitleLine1 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as an Other Race";
+                  }
+                }
+
+
+
                 d3.select("#avg1")
                   .remove()
 
@@ -350,8 +442,7 @@
                   .attr("id", "avg1")
                   .attr("ALIGN", "center")
                   .attr("style", "font-size:20px;color:black")
-                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
-
+                  .text(map1TitleLine1)
 
 
 
@@ -1008,7 +1099,6 @@
             drop2map1Val = data
           };
 
-
           var dropdowns = d3.select("#map1")
             .append("div")
             .attr("class", "dropdown")
@@ -1367,6 +1457,95 @@
                   sum = json.features[a].properties.year[y][c][s] + sum
                 }
                 avg = sum / 51
+                map1TitleLine2 = "";
+                if(drop2map1Val == 0){
+                  if(drop3map1Val == 0){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 18-24";
+                  }
+                  else if(drop3map1Val == 1){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 25-34";
+                  }
+                  else if(drop3map1Val == 2){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 35-44";
+                  }
+                  else if(drop3map1Val == 3){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 45-54";
+                  }
+                  else if(drop3map1Val == 4){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 55-64";
+                  }
+                  else if(drop3map1Val == 5){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People Ages 65 or Older";
+                  }
+                }
+                if(drop2map1Val == 1){
+                  if(drop3map1Val == 0){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with a College Education";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with a High School Education";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with Less Than a High School Education";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with Some College or Technical School Education";
+                  }
+                }
+                if(drop2map1Val == 2){
+                  if(drop3map1Val == 0){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Females";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Males";
+                  }
+                }
+                if(drop2map1Val == 3){
+                  if(drop3map1Val == 0){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of Less than $15,000";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $15,000 to $24,999";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $25,000 to $34,999";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $35,000 to $49,999";
+                  }
+                  if(drop3map1Val == 4){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $50,000 to $74,999";
+                  }
+                  if(drop3map1Val == 5){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for People with an Income of $75,000 or Greater";
+                  }
+                }
+                if(drop2map1Val == 4){
+                  if(drop3map1Val == 0){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as American Indian or Alaska Native";
+                  }
+                  if(drop3map1Val == 1){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Non-Hispanic Black";
+                  }
+                  if(drop3map1Val == 2){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Non-Hispanic White";
+                  }
+                  if(drop3map1Val == 3){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Asian";
+                  }
+                  if(drop3map1Val == 4){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Hawaiian or Pacific Islander";
+                  }
+                  if(drop3map1Val == 5){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Hispanic";
+                  }
+                 if(drop3map1Val == 6){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as Two or More Races";
+                  }
+                if(drop3map1Val == 7){
+                    map1TitleLine2 = "Percent Obesity in "+yearsArray[drop1map1Val]+ " for Individuals Identifying as an Other Race";
+                  }
+                }
                 d3.select("#avg1")
                   .remove()
 
@@ -1375,7 +1554,7 @@
                   .attr("id", "avg1")
                   .attr("ALIGN", "center")
                   .attr("style", "font-size:20px;color:black")
-                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
+                  .text(map1TitleLine2)
 
                 var statenames = Array(51)
                 for (var i = 0; i < json.features.length; i++) {
@@ -2222,6 +2401,95 @@
                   sum = json.features[a].properties.year[drop1map2Val][drop2map2Val][drop3map2Val] + sum
                 }
                 avg = sum / 51
+                map2TitleLine1 = "";
+                if(drop2map2Val == 0){
+                  if(drop3map2Val == 0){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 18-24";
+                  }
+                  else if(drop3map2Val == 1){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 25-34";
+                  }
+                  else if(drop3map2Val == 2){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 35-44";
+                  }
+                  else if(drop3map2Val == 3){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 45-54";
+                  }
+                  else if(drop3map2Val == 4){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 55-64";
+                  }
+                  else if(drop3map2Val == 5){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 65 or Older";
+                  }
+                }
+                if(drop2map1Val == 1){
+                  if(drop3map2Val == 0){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with a College Education";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with a High School Education";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with Less Than a High School Education";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with Some College or Technical School Education";
+                  }
+                }
+                if(drop2map1Val == 2){
+                  if(drop3map2Val == 0){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Females";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Males";
+                  }
+                }
+                if(drop2map1Val == 3){
+                  if(drop3map2Val == 0){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of Less than $15,000";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $15,000 to $24,999";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $25,000 to $34,999";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $35,000 to $49,999";
+                  }
+                  if(drop3map2Val == 4){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $50,000 to $74,999";
+                  }
+                  if(drop3map2Val == 5){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $75,000 or Greater";
+                  }
+                }
+                if(drop2map1Val == 4){
+                  if(drop3map2Val == 0){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as American Indian or Alaska Native";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Non-Hispanic Black";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Non-Hispanic White";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Asian";
+                  }
+                  if(drop3map2Val == 4){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Hawaiian or Pacific Islander";
+                  }
+                  if(drop3map2Val == 5){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Hispanic";
+                  }
+                 if(drop3map2Val == 6){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as Two or More Races";
+                  }
+                if(drop3map2Val == 7){
+                    map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as an Other Race";
+                  }
+                }
                 d3.select("#avg2")
                   .remove()
 
@@ -2230,7 +2498,8 @@
                   .attr("id", "avg2")
                   .attr("ALIGN", "center")
                   .attr("style", "font-size:20px;color:black")
-                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
+                  .text(map2TitleLine1)
+                  //.text("Average Obesity PCT: " + avg.toFixed(1) + "%")
 
 
                   
@@ -2758,6 +3027,7 @@
 
 
                 })
+                
                 chart.render()
 
                 function toogleDataSeries(e) {
@@ -3233,6 +3503,95 @@
                   sum = json.features[a].properties.year[y][c][s] + sum
                 }
                 avg = sum / 51
+                map2TitleLine2 = "";
+                if(drop2map2Val == 0){
+                  if(drop3map2Val == 0){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 18-24";
+                  }
+                  else if(drop3map1Val == 1){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 25-34";
+                  }
+                  else if(drop3map2Val == 2){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 35-44";
+                  }
+                  else if(drop3map2Val == 3){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 45-54";
+                  }
+                  else if(drop3map2Val == 4){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 55-64";
+                  }
+                  else if(drop3map2Val == 5){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People Ages 65 or Older";
+                  }
+                }
+                if(drop2map1Val == 1){
+                  if(drop3map2Val == 0){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with a College Education";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with a High School Education";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with Less Than a High School Education";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with Some College or Technical School Education";
+                  }
+                }
+                if(drop2map1Val == 2){
+                  if(drop3map2Val == 0){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Females";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Males";
+                  }
+                }
+                if(drop2map1Val == 3){
+                  if(drop3map2Val == 0){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of Less than $15,000";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of $15,000 to $24,999";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of $25,000 to $34,999";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of $35,000 to $49,999";
+                  }
+                  if(drop3map2Val == 4){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of $50,000 to $74,999";
+                  }
+                  if(drop3map2Val == 5){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for People with an Income of $75,000 or Greater";
+                  }
+                }
+                if(drop2map1Val == 4){
+                  if(drop3map2Val == 0){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as American Indian or Alaska Native";
+                  }
+                  if(drop3map2Val == 1){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Non-Hispanic Black";
+                  }
+                  if(drop3map2Val == 2){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Non-Hispanic White";
+                  }
+                  if(drop3map2Val == 3){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Asian";
+                  }
+                  if(drop3map2Val == 4){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Hawaiian or Pacific Islander";
+                  }
+                  if(drop3map2Val == 5){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Hispanic";
+                  }
+                 if(drop3map2Val == 6){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as Two or More Races";
+                  }
+                if(drop3map2Val == 7){
+                    map2TitleLine2 = "Percent Obesity in "+yearsArray[drop2map2Val]+ " for Individuals Identifying as an Other Race";
+                  }
+                }
                 d3.select("#avg2")
                   .remove()
 
@@ -3241,7 +3600,7 @@
                   .attr("id", "avg2")
                   .attr("ALIGN", "center")
                   .attr("style", "font-size:20px;color:black")
-                  .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
+                  .text(map2TitleLine2)
 
 
 
