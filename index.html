@@ -861,7 +861,7 @@
                   .append("div")
                   .attr("id", "title1")
                   .attr("ALIGN", "center")
-                  .attr("style", "font-size:20px;color:black")
+                  .attr("style", "font-size:24px;color:black")
                   .text(map1TitleLine1)
 
                 var avg = 0
@@ -881,7 +881,7 @@
                   .append("div")
                   .attr("id", "avg1")
                   .attr("ALIGN", "center")
-                  .attr("style", "font-size:12px;color:black")
+                  .attr("style", "font-size:18px;color:black")
                   .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
                 //original loc
 
@@ -946,7 +946,7 @@
                     contentFormatter: function (e) {
                       var content = " ";
                       for (var i = 0; i < e.entries.length; i++) {
-                        content = e.entries[i].dataSeries.name + " in " + e.entries[i].dataPoint.x + ": " + e.entries[i].dataPoint.y
+                        content = e.entries[i].dataSeries.name + " in " + e.entries[i].dataPoint.x + ": " + e.entries[i].dataPoint.y +"%"
                       }
                       return content;
                     }
@@ -2260,7 +2260,7 @@
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People Ages 65 or Older";
                   }
                 }
-                if(drop2map1Val == 1){
+                if(drop2map2Val == 1){
                   if(drop3map2Val == 0){
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with a College Education";
                   }
@@ -2274,7 +2274,7 @@
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with Some College or Technical School Education";
                   }
                 }
-                if(drop2map1Val == 2){
+                if(drop2map2Val == 2){
                   if(drop3map2Val == 0){
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Females";
                   }
@@ -2282,7 +2282,7 @@
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Males";
                   }
                 }
-                if(drop2map1Val == 3){
+                if(drop2map2Val == 3){
                   if(drop3map2Val == 0){
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of Less than $15,000";
                   }
@@ -2302,7 +2302,7 @@
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for People with an Income of $75,000 or Greater";
                   }
                 }
-                if(drop2map1Val == 4){
+                if(drop2map2Val == 4){
                   if(drop3map2Val == 0){
                     map2TitleLine1 = "Percent Obesity in "+yearsArray[drop1map2Val]+ " for Individuals Identifying as American Indian or Alaska Native";
                   }
@@ -2336,7 +2336,7 @@
                   .append("div")
                   .attr("id", "title2")
                   .attr("ALIGN", "center")
-                  .attr("style", "font-size:20px;color:black")
+                  .attr("style", "font-size:24px;color:black")
                   .text(map2TitleLine1)
 
 
@@ -2358,7 +2358,7 @@
                   .append("div")
                   .attr("id", "avg2")
                   .attr("ALIGN", "center")
-                  .attr("style", "font-size:12px;color:black")
+                  .attr("style", "font-size:18px;color:black")
                   .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
 
 
@@ -2422,7 +2422,7 @@
                     contentFormatter: function (e) {
                       var content = " ";
                       for (var i = 0; i < e.entries.length; i++) {
-                        content = e.entries[i].dataSeries.name + " in " + e.entries[i].dataPoint.x + ": " + e.entries[i].dataPoint.y
+                        content = e.entries[i].dataSeries.name + " in " + e.entries[i].dataPoint.x + ": " + e.entries[i].dataPoint.y+"%"
                       }
                       return content;
                     }
