@@ -496,6 +496,7 @@
                     // Get data value
                     var value = d.properties.year[y][c][s];
 
+
                     if (value > maxRate && value != "DNE") {
                       maxRate = value
                     }
@@ -533,7 +534,10 @@
                     div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
-                  })
+                  }).on("click",function(d){
+                    window.alert(d.id-1)
+                    toogleDataSeries(chartjson[d.id-1])
+                    })
                   //.on("click",toogleDataSeries)
 
                   // fade out tooltip on mouse out               
@@ -718,6 +722,7 @@
                   axisY2: {
                     title: "% Obesity",
                     suffix: "%",
+                    tickLength:25,
                     minimum: 0,
                     titleFontSize: 20,
                     titleFontFamily: "tahoma"
@@ -1987,6 +1992,7 @@
                   axisY2: {
                     title: "% Obesity",
                     suffix: "%",
+                    tickLength:25,
                     minimum: 0,
                     titleFontSize: 20,
                     titleFontFamily: "tahoma"
@@ -2469,6 +2475,7 @@
                     markerSize: 0,
                     dataPoints: chartjson[50],
                     visible: false
+                    
                   },
                   ]
                 })
@@ -2476,6 +2483,7 @@
 
                 function toogleDataSeries(e) {
                   if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+
                     e.dataSeries.visible = false;
                   } else {
                     e.dataSeries.visible = true;
