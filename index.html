@@ -534,11 +534,10 @@
                     div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
-                  }).on("click",function(d){
-                    window.alert(d.id-1)
-                    toogleDataSeries(chartjson[d.id-1])
-                    })
-                  //.on("click",toogleDataSeries)
+                  })
+                  .on("click", function (d) {
+                    onclickToggle(d)
+                  })
 
                   // fade out tooltip on mouse out               
                   .on("mouseout", function (d) {
@@ -639,6 +638,17 @@
                 }
 
 
+                function onclickToggle(d) {
+                  e = chart.options.data[parseInt(d.id) - 1]
+                  if (typeof (e.visible) === "undefined" || e.visible) {
+                    e.visible = false;
+                  } else {
+                    e.visible = true;
+
+                  }
+                  chart.render()
+                }
+
                 d3.select("#title1")
                   .remove()
 
@@ -722,7 +732,7 @@
                   axisY2: {
                     title: "% Obesity",
                     suffix: "%",
-                    tickLength:25,
+                    tickLength: 25,
                     minimum: 0,
                     titleFontSize: 20,
                     titleFontFamily: "tahoma"
@@ -1725,6 +1735,9 @@
                     div.transition()
                       .duration(500)
                       .style("opacity", 0);
+                  })
+                  .on("click", function (d) {
+                    onclickToggle(d)
                   });
 
                 var map1TitleLine1 = "";
@@ -1906,7 +1919,16 @@
                     map2TitleLine1 = "Percent Obesity in " + yearsArray[drop1map2Val] + " for Individuals Identifying as an Other Race";
                   }
                 }
+                function onclickToggle(d) {
+                  e = chart.options.data[parseInt(d.id) - 1]
+                  if (typeof (e.visible) === "undefined" || e.visible) {
+                    e.visible = false;
+                  } else {
+                    e.visible = true;
 
+                  }
+                  chart.render()
+                }
                 d3.select("#title2")
                   .remove()
 
@@ -1992,7 +2014,7 @@
                   axisY2: {
                     title: "% Obesity",
                     suffix: "%",
-                    tickLength:25,
+                    tickLength: 25,
                     minimum: 0,
                     titleFontSize: 20,
                     titleFontFamily: "tahoma"
@@ -2475,7 +2497,7 @@
                     markerSize: 0,
                     dataPoints: chartjson[50],
                     visible: false
-                    
+
                   },
                   ]
                 })
