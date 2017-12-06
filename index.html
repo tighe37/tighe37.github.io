@@ -530,13 +530,10 @@
                   .on("mouseover", function (d) {
                     div.transition()
                       .duration(200)
-                      .style("opacity", .9);
+                      .style("opacity", .9)
                     div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
-                  })
-                  .on("click", function (d) {
-                    onclickToggle(d)
                   })
 
                   // fade out tooltip on mouse out               
@@ -637,17 +634,6 @@
                   }
                 }
 
-
-                function onclickToggle(d) {
-                  e = chart.options.data[parseInt(d.id) - 1]
-                  if (typeof (e.visible) === "undefined" || e.visible) {
-                    e.visible = false;
-                  } else {
-                    e.visible = true;
-
-                  }
-                  chart.render()
-                }
 
                 d3.select("#title1")
                   .remove()
@@ -1216,19 +1202,45 @@
                     dataPoints: chartjson[50],
                     visible: false
                   },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    dataPoints: chartjson[50],
+                    name: "Toggle All",
+                    showInLegend: true,
+                    visible: false,
+
+                  }
                   ]
 
 
                 })
                 chart.render()
 
-                function toogleDataSeries(e) {
-                  if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                    e.dataSeries.visible = false;
-                  } else {
-                    e.dataSeries.visible = true;
+                function toggleAll() {
+                  for (i = 0; i < 51; i++) {
+                    if (toggle == false) {
+                      chart.options.data[i].visible = true
+                    } else {
+                      chart.options.data[i].visible = false
+                    }
                   }
-                  chart.render();
+                  toggle = !toggle
+                  chart.render()
+                }
+
+                function toogleDataSeries(e) {
+                  if (e.dataSeries.name != "Toggle All") {
+                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+
+                      e.dataSeries.visible = false;
+                    } else {
+                      e.dataSeries.visible = true;
+                    }
+                    chart.render();
+                  } else {
+                    toggleAll()
+                  }
                 }
 
               })
@@ -1240,6 +1252,7 @@
       </div>
       <div class="col-lg-6" id="map2">
         <script>
+          var toggle = false;
           var width = 864;
           var height = 450;
 
@@ -1718,13 +1731,14 @@
                       return color//(value);  
                     }
                   })
+
                 svg2.selectAll("path")
                   // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
                   // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
                   .on("mouseover", function (d) {
                     div.transition()
                       .duration(200)
-                      .style("opacity", .9);
+                      .style("opacity", .9)
                     div.text(d.properties.name + ": " + d.properties.year[y][c][s] + "%")
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
@@ -1735,9 +1749,6 @@
                     div.transition()
                       .duration(500)
                       .style("opacity", 0);
-                  })
-                  .on("click", function (d) {
-                    onclickToggle(d)
                   });
 
                 var map1TitleLine1 = "";
@@ -1919,16 +1930,7 @@
                     map2TitleLine1 = "Percent Obesity in " + yearsArray[drop1map2Val] + " for Individuals Identifying as an Other Race";
                   }
                 }
-                function onclickToggle(d) {
-                  e = chart.options.data[parseInt(d.id) - 1]
-                  if (typeof (e.visible) === "undefined" || e.visible) {
-                    e.visible = false;
-                  } else {
-                    e.visible = true;
 
-                  }
-                  chart.render()
-                }
                 d3.select("#title2")
                   .remove()
 
@@ -2499,19 +2501,57 @@
                     visible: false
 
                   },
+                  {
+                    type: "line",
+                    axisYType: "secondary",
+                    dataPoints: chartjson[50],
+                    name: "Toggle All",
+                    showInLegend: true,
+                    visible: false,
+
+                  }
                   ]
                 })
                 chart.render()
 
-                function toogleDataSeries(e) {
-                  if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-
-                    e.dataSeries.visible = false;
-                  } else {
-                    e.dataSeries.visible = true;
+                function toggleAll() {
+                  for (i = 0; i < 51; i++) {
+                    if (toggle == false) {
+                      chart.options.data[i].visible = true
+                    } else {
+                      chart.options.data[i].visible = false
+                    }
                   }
-                  chart.render();
+                  toggle = !toggle
+                  chart.render()
                 }
+
+                function toogleDataSeries(e) {
+                  if (e.dataSeries.name != "Toggle All") {
+                    if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+
+                      e.dataSeries.visible = false;
+                    } else {
+                      e.dataSeries.visible = true;
+                    }
+                    chart.render();
+                  } else {
+                    toggleAll()
+                  }
+                }
+
+
+
+                // function onclickToggle(d) {
+                //   e = chart.options.data[parseInt(d.id) - 1]
+                //   if (typeof (e.visible) === "undefined" || e.visible) {
+                //     e.visible = false;
+                //   } else {
+                //     e.visible = true;
+
+                //   }
+                //   chart.render()
+                // }
 
 
               })
