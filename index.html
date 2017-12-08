@@ -540,6 +540,23 @@
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
+                  // .on("click", function (d) {
+                  //   e = chart.options.data[parseInt(d.id)-1]
+                  //   d3.select(this).style("stroke","black").style("stroke-width", "2");
+                  //   onclickToggle(d)
+                  // })
+
+                  .on("click", function (d) {
+                    e = chart.options.data[parseInt(d.id) - 1]
+                    if (typeof (e.visible) === "undefined" || e.visible) {
+                      d3.select(this).style("stroke", "white").style("stroke-width", "1")
+                      e.visible = false
+                    } else {
+                      d3.select(this).style("stroke", "black").style("stroke-width", "2")
+                      e.visible = true
+                    }
+                    chart.render()
+                  })
 
                   // fade out tooltip on mouse out               
                   .on("mouseout", function (d) {
@@ -548,7 +565,19 @@
                       .style("opacity", 0);
                   });
 
-                //Dynamic Titles, uses if statements to analysis which condition is met, and displayes approapriate title.
+
+                function onclickToggle(d) {
+                  e = chart.options.data[parseInt(d.id) - 1]
+                  if (typeof (e.visible) === "undefined" || e.visible) {
+                    e.visible = false;
+                  } else {
+                    e.visible = true;
+                    //  d3.select(this.this).style("stroke", "#000")
+                  }
+                  chart.render()
+                }
+
+
                 var map1TitleLine1 = "";
                 if (drop2map1Val == 0) {
                   if (drop3map1Val == 0) {
@@ -669,8 +698,6 @@
                   .attr("ALIGN", "center")
                   .attr("style", "font-size:18px;color:black")
                   .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
-
-
                 //original loc
 
                 var statenames = Array(51)
@@ -698,7 +725,7 @@
                 }
 
 
-                //Updates and changes the charts
+
                 d3.select("#chartContainer").select("#chart1").remove()
 
                 d3.select("#chartContainer")
@@ -706,7 +733,7 @@
                   .attr("id", "chart1")
                   .attr("style", "height:500px;width:45%;float:left")
 
-                //Creates the chart elements.
+
                 var chart = new CanvasJS.Chart("chart1", {
                   animationEnabled: false,
                   title: {
@@ -1301,7 +1328,6 @@
           var gender = ["Female", "Male"]
           var education = ["College Graduate", "High School Graduate", "Less Than High School", "Some College or Technical School"]
 
-          //Creates and updates the dropdown menus.
           var dropdowns = d3.select("#map2")
             .append("div")
             .attr("class", "dropdown")
@@ -1356,7 +1382,7 @@
             updateMap2()
 
           }
-          //Making the class dropdown boxes
+          //making the class dropdown boxes
 
           var dropdowns = d3.select("#map2")
             .append("div")
@@ -1483,7 +1509,7 @@
 
           }
 
-          //Makes the second map, and sets it's data set values.
+
           function makemap2(y, c, s) {
             var statesArray = Array(51)
             var yearsArray = ["2011", "2012", "2013", "2014", "2015"]
@@ -1751,6 +1777,23 @@
                       .style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
                   })
+                  // .on("click", function (d) {
+                  //   e = chart.options.data[parseInt(d.id)-1]
+                  //   d3.select(this).style("stroke","black").style("stroke-width", "2");
+                  //   onclickToggle(d)
+                  // })
+
+                  .on("click", function (d) {
+                    e = chart.options.data[parseInt(d.id) - 1]
+                    if (typeof (e.visible) === "undefined" || e.visible) {
+                      d3.select(this).style("stroke", "white").style("stroke-width", "1")
+                      e.visible = false
+                    } else {
+                      d3.select(this).style("stroke", "black").style("stroke-width", "2")
+                      e.visible = true
+                    }
+                    chart.render()
+                  })
 
                   // fade out tooltip on mouse out               
                   .on("mouseout", function (d) {
@@ -1759,7 +1802,17 @@
                       .style("opacity", 0);
                   });
 
-                  //Creates the map title based on class selection.
+                function onclickToggle(d) {
+                  e = chart.options.data[parseInt(d.id) - 1]
+                  if (typeof (e.visible) === "undefined" || e.visible) {
+                    e.visible = false;
+                  } else {
+                    e.visible = true;
+
+                  }
+                  chart.render()
+                }
+
                 var map1TitleLine1 = "";
                 if (drop2map1Val == 0) {
                   if (drop3map1Val == 0) {
@@ -1974,8 +2027,8 @@
                   .text("Average Obesity PCT: " + avg.toFixed(1) + "%")
 
 
-        
-                //Creates the second chart.
+
+
                 var statenames = Array(51)
                 for (var i = 0; i < json.features.length; i++) {
                   statenames[i] = json.features[i].properties.name
@@ -2576,8 +2629,6 @@
     <div id="chart2" style="height:500px;width:40%;float:right"></div>
   </div>
 
-
-  <!--This is the section where the group cited it's libraries and cites back to the data source. -->
 
   <p align="left" style="font-size:100%" float="left">Nikhila Cooduvalli, Adair Kielmeyer, Claire Mercer, Patrick Tighe
     <br> Geovisualization 5201 Morteza Karimzadeh
